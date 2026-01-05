@@ -14,8 +14,8 @@ body {
 
 /* Header */
 .header {
-    background: #000000;
-    color: #ffffff;
+   
+    color: #000;
     padding: 10px;
     text-align: center;
     position: sticky;
