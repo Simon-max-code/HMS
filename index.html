@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Menu</title>
+    <link rel="stylesheet" href="customer.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <h1>Menu</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dishes Section -->
+        <section id="dishes" class="menu-section active">
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="Pasta">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Pasta Carbonara</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$12.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Pasta Carbonara', 12.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pizza">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Margherita Pizza</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$15.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Margherita Pizza', 15.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400" alt="Soup">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Tomato Soup</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$8.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Tomato Soup', 8.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400" alt="Salad">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Caesar Salad</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$10.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Caesar Salad', 10.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Drinks Section -->
+        <section id="drinks" class="menu-section">
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400" alt="Cocktail">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Mojito</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$9.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Mojito', 9.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Coffee">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Espresso</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$3.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Espresso', 3.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400" alt="Beer">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Craft Beer</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$7.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Craft Beer', 7.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1597318167272-600e9a20b637?w=400" alt="Juice">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Fresh Juice</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$5.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Fresh Juice', 5.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Assortments Section -->
+        <section id="assortments" class="menu-section">
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1619221882018-5c8e9c4e1e27?w=400" alt="Platter">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Cheese Platter</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$18.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 18.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1559583985-c80d8ad9b29f?w=400" alt="Appetizers">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Tapas Selection</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$22.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Tapas Selection', 22.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Side Dishes Section -->
+        <section id="sidedishes" class="menu-section">
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Fries">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">French Fries</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$4.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'French Fries', 4.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400" alt="Rice">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Garlic Rice</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$3.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Garlic Rice', 3.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Garlic Bread</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$5.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Garlic Bread', 5.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Vegetables">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">Grilled Veggies</h3>
+                        <div class="product-rating">
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star">★</span>
+                            <span class="star empty">★</span>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">$6.99</span>
+                            <button class="order-btn" onclick="addToOrder(this, 'Grilled Veggies', 6.99)">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Floating Order Confirmation Modal -->
+    <div id="orderModal" class="order-modal">
+        <div class="modal-content">
+            <div class="modal-info">
+                <span class="item-count">0 items</span>
+                <span class="total-price">$0.00</span>
+            </div>
+            <button class="confirm-btn" onclick="confirmOrder()">Confirm Order</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('dishes', this)">
+            <span class="nav-icon">🍽️</span>
+            <span class="nav-label">Dishes</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('drinks', this)">
+            <span class="nav-icon">🍹</span>
+            <span class="nav-label">Drinks</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('assortments', this)">
+            <span class="nav-icon">🧀</span>
+            <span class="nav-label">Assortments</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('sidedishes', this)">
+            <span class="nav-icon">🍟</span>
+            <span class="nav-label">Sides</span>
+        </button>
+    </nav>
+
+    <script src="customer.js"></script>
+</body>
+</html>
