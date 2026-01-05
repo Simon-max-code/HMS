@@ -14,8 +14,8 @@ body {
 
 /* Header */
 .header {
-   
-    color: #000;
+    background: linear-gradient(90deg, #ff0000, #000000);
+    color: #fff;
     padding: 10px;
     text-align: center;
     position: sticky;
