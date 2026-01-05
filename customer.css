@@ -16,7 +16,7 @@ body {
 .header {
     background: #000000;
     color: #ffffff;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     position: sticky;
     top: 0;
@@ -35,6 +35,11 @@ body {
     padding: 20px 16px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.mnu{
+
+
 }
 
 /* Menu Sections */
