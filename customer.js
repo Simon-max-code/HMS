@@ -1,4 +1,3 @@
-
 // JavaScript - script.js
 
 // Order state
@@ -39,6 +38,7 @@ const categoryTabs = {
 
 // Current active main tab
 let currentMainTab = 'dishes';
+let isListView = false;
 
 // Initialize category tabs
 function initializeCategoryTabs() {
@@ -177,9 +177,60 @@ function confirmOrder() {
     }, 1500);
 }
 
+// Toggle between grid and list view
+function toggleLayout() {
+    isListView = !isListView;
+    const grids = document.querySelectorAll('.product-grid');
+    const toggleBtn = document.getElementById('layoutToggle');
+    const layoutIcon = toggleBtn.querySelector('.layout-icon');
+    
+    grids.forEach(grid => {
+        if (isListView) {
+            grid.classList.add('list-view');
+        } else {
+            grid.classList.remove('list-view');
+        }
+    });
+    
+    // Update icon
+    if (isListView) {
+        toggleBtn.classList.add('list-view');
+        layoutIcon.textContent = '▦'; // Grid icon
+    } else {
+        toggleBtn.classList.remove('list-view');
+        layoutIcon.textContent = '☰'; // List icon
+    }
+}
 
+// Search products
+function searchProducts(query) {
+    query = query.toLowerCase().trim();
+    const allCards = document.querySelectorAll('.product-card');
+    
+    allCards.forEach(card => {
+        const productName = card.querySelector('.product-name').textContent.toLowerCase();
+        
+        if (productName.includes(query)) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Show/hide category sections based on visible products
+    const categorySections = document.querySelectorAll('.category-section');
+    categorySections.forEach(section => {
+        const visibleCards = section.querySelectorAll('.product-card:not([style*="display: none"])');
+        if (visibleCards.length === 0) {
+            section.style.display = 'none';
+        } else {
+            section.style.display = '';
+        }
+    });
+}
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
+    initializeCategoryTabs();
     console.log('QR Menu Template Loaded');
 });

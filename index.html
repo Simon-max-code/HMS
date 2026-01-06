@@ -11,7 +11,17 @@
     <header class="header">
         <h1>H.M.S LOGO</h1>
     </header>
-
+    
+<!-- Search and Layout Toggle Section -->
+    <div class="search-layout-container">
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search menu items..." oninput="searchProducts(this.value)">
+            <span class="search-icon">🔍</span>
+        </div>
+        <button class="layout-toggle-btn" onclick="toggleLayout()" id="layoutToggle">
+            <span class="layout-icon">☰</span>
+        </button>
+    </div>
     <h1 class="menu-title">Menu</h1>
 
     <!-- Category Tabs (Dynamic based on active section) -->
