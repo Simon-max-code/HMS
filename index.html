@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Menu</title>
     <link rel="stylesheet" href="customer.css">
+    <title>Menu</title>
 </head>
 <body>
     <!-- Header -->
@@ -12,130 +12,178 @@
         <h1>H.M.S LOGO</h1>
     </header>
 
-<h1 class="mnu">Menu</h1>
+    <h1 class="menu-title">Menu</h1>
+
+    <!-- Category Tabs (Dynamic based on active section) -->
+    <div class="category-tabs-container">
+        <div class="category-tabs" id="categoryTabs">
+            <!-- Tabs will be inserted here by JavaScript -->
+        </div>
+    </div>
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Dishes Section -->
         <section id="dishes" class="menu-section active">
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="Pasta">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Pasta Carbonara</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Main Courses Category -->
+            <div class="category-section" id="cat-main-courses">
+                <h2 class="category-heading">Main Courses</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="Pasta">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1299</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Pasta Carbonara', 1299)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Pasta Carbonara</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦1299</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Pasta Carbonara', 1299)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pizza">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Margherita Pizza</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦577</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Margherita Pizza', 577)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pizza">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Margherita Pizza</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+            <!-- Soups Category -->
+            <div class="category-section" id="cat-soups">
+                <h2 class="category-heading">Soups</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400" alt="Soup">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦577</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Margherita Pizza', 577)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Tomato Soup</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦989</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Tomato Soup', 989)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+  <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400" alt="Soup">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">brown Soup</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦909</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'brown Soup', 909)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400" alt="Soup">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Tomato Soup</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Local Delicacies Category -->
+            <div class="category-section" id="cat-local">
+                <h2 class="category-heading">Local Delicacies</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Nkwobi">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦989</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Tomato Soup', 989)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Nkwobi</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦200</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Nkwobi', 200)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Goat meat">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Goat Meat</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦199</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Goat Meat', 199)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pizza">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Nkwobi</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+            <!-- Salads Category -->
+            <div class="category-section" id="cat-salads">
+                <h2 class="category-heading">Salads</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400" alt="Salad">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦200</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Nkwobi', 200)">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pizza">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Goat meat</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦199</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Goat meat', 199)">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400" alt="Salad">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Caesar Salad</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦100</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Caesar Salad', 100)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Caesar Salad</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦100</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Caesar Salad', 100)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -144,167 +192,217 @@
 
         <!-- Drinks Section -->
         <section id="drinks" class="menu-section">
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400" alt="Cocktail">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Mojito</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Cocktails Category -->
+            <div class="category-section" id="cat-cocktails">
+                <h2 class="category-heading">Cocktails</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400" alt="Cocktail">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦900</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Mojito', 900)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Mojito</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦900</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Mojito', 900)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+ <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400" alt="Cocktail">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">lemonade</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦700</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'lemonade', 700)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+
+            <!-- Coffee & Tea Category -->
+            <div class="category-section" id="cat-coffee-tea">
+                <h2 class="category-heading">Coffee & Tea</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Coffee">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Espresso</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦399</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Espresso', 399)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Tea">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Tea</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦587</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Tea', 587)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Coffee">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Espresso</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Soft Drinks Category -->
+            <div class="category-section" id="cat-soft-drinks">
+                <h2 class="category-heading">Soft Drinks</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Fanta">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦399</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Espresso', 399)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Fanta</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦19</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Fanta', 19)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Coke">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Coke</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦199</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Coke', 199)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400"" alt="beverages">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Beverages</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+            <!-- Beer & Alcohol Category -->
+            <div class="category-section" id="cat-beer">
+                <h2 class="category-heading">Beer & Alcohol</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400" alt="Beer">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1599</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'beverages', 1599)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Craft Beer</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦700</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Craft Beer', 700)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400" alt="Beverages">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Beverages</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦1599</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Beverages', 1599)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400" alt="Beer">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Craft Beer</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦700</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Craft Beer', 700)">Order</button>
-                        </div>
-                    </div>
-                </div>
+    
 
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400"" alt="fanta">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">fanta</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+            <!-- Juices Category -->
+            <div class="category-section" id="cat-juices">
+                <h2 class="category-heading">Fresh Juices</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1597318167272-600e9a20b637?w=400" alt="Juice">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦19</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'fanta', 19)">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400"" alt="coke">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">coke</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦199</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Coke', 199)">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400"" alt="Tea">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Tea</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦587</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Tea', 587)">Order</button>
-                        </div>
-                    </div>
-                </div>
-
-
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1597318167272-600e9a20b637?w=400" alt="Juice">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Fresh Juice</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦599</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Fresh Juice', 599)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Fresh Juice</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦599</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Fresh Juice', 599)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -313,124 +411,167 @@
 
         <!-- Assortments Section -->
         <section id="assortments" class="menu-section">
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400 �
-Unsplash" alt="Platter">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Cheese Platter</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Platters Category -->
+            <div class="category-section" id="cat-platters">
+                <h2 class="category-heading">Platters</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400" alt="Platter">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1899</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 1899)">Order</button>
-                        </div>
-                    </div>
-                </div>
-<div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400 �
-Unsplash" alt="Platter">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Cheese Platter</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1899</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 1899)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Cheese Platter</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦1899</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 1899)">Order</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-<div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400 �
-Unsplash" alt="Platter">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Cheese Platter</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+ <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400" alt="Platter">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1899</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 1899)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">butter Platter</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦199</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'butter Platter', 199)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-<div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400 �
-Unsplash" alt="Platter">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Cheese Platter</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1899</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 1899)">Order</button>
-                        </div>
-                    </div>
-                </div>
-<div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400 �
-Unsplash" alt="Platter">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Cheese Platter</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                        </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1899</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Cheese Platter', 1899)">Order</button>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1559583985-c80d8ad9b29f?w=400" alt="Appetizers">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Tapas Selection</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+        <!-- fish category -->
+           <div class="category-section" id="cat-fish">
+                <h2 class="category-heading">fishes</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=100" alt="fish">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦2299</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Tapas Selection', 2299)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">grilled fish</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦2299</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'grilled fish', 2299)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+           <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=100" alt="fish">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">smoked fish</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦3299</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'smoked fish', 3299)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+           <!--meat category-->
+<div class="category-section" id="cat-meat">
+                <h2 class="category-heading">meats</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?w=100" alt="meat">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name"> grilled meat</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦3299</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'grilled meat', 3299)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+ <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?w=100" alt="meat">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name"> dried meat</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦299</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'dried meat', 299)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- Tapas Category -->
+            <div class="category-section" id="cat-tapas">
+                <h2 class="category-heading">Tapas & Appetizers</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1559583985-c80d8ad9b29f?w=400" alt="Appetizers">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Tapas Selection</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦2299</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Tapas Selection', 2299)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -439,167 +580,476 @@ Unsplash" alt="Platter">
 
         <!-- Side Dishes Section -->
         <section id="sidedishes" class="menu-section">
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Fries">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">French Fries</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Fries & Potatoes Category -->
+            <div class="category-section" id="cat-fries">
+                <h2 class="category-heading">Fries & Potatoes</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Fries">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦499</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'French Fries', 499)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">French Fries</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦499</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'French Fries', 499)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+  <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Fries">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">potato chips</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦699</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'potato chips', 699)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="shawarma">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">shawarma</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+            <!-- Wraps Category -->
+            <div class="category-section" id="cat-wraps">
+                <h2 class="category-heading">Wraps</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Shawarma">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦19</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'shawarma', 19)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Shawarma</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦19</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Shawarma', 19)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+  <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Shawarma">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">egg roll</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦190</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'egg roll', 190)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+  <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400" alt="Shawarma">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">pie</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦150</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'pie', 150)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400" alt="Rice">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Garlic Rice</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+            <!-- Rice Category -->
+            <div class="category-section" id="cat-rice">
+                <h2 class="category-heading">Rice Dishes</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400" alt="Rice">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦389</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Garlic Rice', 389)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Garlic Rice</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦389</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Garlic Rice', 389)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400" alt="Rice">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">fried Rice</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦3890</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'fried Rice', 3890)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                         <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400" alt="Rice">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">stew Rice</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦3849</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'stew Rice', 3849)">Order</button>
+                            </div>
+                        </div>
+                         </div>
+
+
+                       <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400" alt="Rice">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">jollof Rice</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                    
+                             <div class="product-footer">
+                                <span class="product-price">₦389</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'jollof Rice', 389)">Order</button>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Garlic Bread</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Bread Category -->
+            <div class="category-section" id="cat-bread">
+                <h2 class="category-heading">Bread</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦59</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Garlic Bread', 59)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Garlic Bread</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦59</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Garlic Bread', 59)">Order</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pizza">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">pepper soup</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦1599</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'peppersoup', 1599)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">ginger Bread</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦590</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'ginger Bread', 590)">Order</button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Garlic Bread</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦59</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Garlic Bread', 59)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">wheat Bread</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦599</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'wheat Bread', 599)">Order</button>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">fresh Bread</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦789</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'fresh Bread', 789)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
                 </div>
+            </div>
 
-<div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400" alt="Bread">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Garlic Bread</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
+            <!-- Soups Category -->
+            <div class="category-section" id="cat-pepper-soup">
+                <h2 class="category-heading">Pepper Soup</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pepper Soup">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦59</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Garlic Bread', 59)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">Pepper Soup</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦1599</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Pepper Soup', 1599)">Order</button>
+                            </div>
                         </div>
                     </div>
+
+   <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pepper Soup">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">chicken pepper Soup</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦1590</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'chicken pepper Soup', 1590)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+   <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pepper Soup">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">goat Pepper Soup</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦159</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'goat Pepper Soup', 159)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+                       <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400" alt="Pepper Soup">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">fish Pepper Soup</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦599</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'fish Pepper Soup', 599)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
+            </div>
+
+            <!-- Vegetables Category -->
+            <div class="category-section" id="cat-vegetables">
+                <h2 class="category-heading">Vegetables</h2>
+                <div class="product-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Vegetables">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Grilled Veggies</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦699</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'Grilled Veggies', 699)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Vegetables">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">smoked Veggies</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦690</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'smoked Veggies', 690)">Order</button>
+                            </div>
+                        </div>
+                    </div>
 
 
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Vegetables">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">Grilled Veggies</h3>
-                        <div class="product-rating">
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star">★</span>
-                            <span class="star empty">★</span>
+
+                        <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Vegetables">
                         </div>
-                        <div class="product-footer">
-                            <span class="product-price">₦699</span>
-                            <button class="order-btn" onclick="addToOrder(this, 'Grilled Veggies', 699)">Order</button>
+                        <div class="product-info">
+                            <h3 class="product-name">bitter leaf</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦799</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'bitter leaf', 799)">Order</button>
+                            </div>
                         </div>
                     </div>
+
+
+    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400" alt="Vegetables">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">lettuce</h3>
+                            <div class="product-rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star empty">★</span>
+                            </div>
+                            <div class="product-footer">
+                                <span class="product-price">₦600</span>
+                                <button class="order-btn" onclick="addToOrder(this, 'lettuce', 600)">Order</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                 </div>
             </div>
         </section>
@@ -610,7 +1060,7 @@ Unsplash" alt="Platter">
         <div class="modal-content">
             <div class="modal-info">
                 <span class="item-count">0 items</span>
-                <span class="total-price">$0.00</span>
+                <span class="total-price">₦0.00</span>
             </div>
             <button class="confirm-btn" onclick="confirmOrder()">Confirm Order</button>
         </div>
