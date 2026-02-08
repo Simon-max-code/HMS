@@ -145,36 +145,18 @@ function updateOrderModal() {
     if (orderItems.length > 0) {
         modal.classList.add('show');
         itemCount.textContent = `${orderItems.length} ${orderItems.length === 1 ? 'item' : 'items'}`;
-        totalPriceEl.textContent = `₦${totalPrice.toFixed(2)}`;
+        totalPriceEl.textContent = `â‚¦${totalPrice.toFixed(2)}`;
     } else {
         modal.classList.remove('show');
     }
 }
 
-// Confirm order (mock functionality)
+// Confirm order (open checkout modal)
 function confirmOrder() {
     if (orderItems.length === 0) return;
     
-    // Mock confirmation animation
-    const modal = document.getElementById('orderModal');
-    const confirmBtn = document.querySelector('.confirm-btn');
-    
-    confirmBtn.textContent = 'Order Placed!';
-    confirmBtn.style.background = '#4CAF50';
-    confirmBtn.style.color = '#ffffff';
-    
-    setTimeout(() => {
-        // Reset everything
-        orderItems = [];
-        totalPrice = 0;
-        modal.classList.remove('show');
-        
-        setTimeout(() => {
-            confirmBtn.textContent = 'Confirm Order';
-            confirmBtn.style.background = '#ffffff';
-            confirmBtn.style.color = '#000000';
-        }, 300);
-    }, 1500);
+    // Open checkout modal
+    openCheckout();
 }
 
 // Toggle between grid and list view
@@ -195,10 +177,10 @@ function toggleLayout() {
     // Update icon
     if (isListView) {
         toggleBtn.classList.add('list-view');
-        layoutIcon.textContent = '▦'; // Grid icon
+        layoutIcon.textContent = 'â–¦'; // Grid icon
     } else {
         toggleBtn.classList.remove('list-view');
-        layoutIcon.textContent = '☰'; // List icon
+        layoutIcon.textContent = 'â˜°'; // List icon
     }
 }
 
@@ -233,4 +215,143 @@ function searchProducts(query) {
 document.addEventListener('DOMContentLoaded', () => {
     initializeCategoryTabs();
     console.log('QR Menu Template Loaded');
+});
+// Checkout Modal Functions
+
+// Open checkout modal
+function openCheckout() {
+    const overlay = document.getElementById('checkoutOverlay');
+    const checkoutItems = document.getElementById('checkoutItems');
+    const ticketItems = document.getElementById('ticketItems');
+    const ticketTotal = document.getElementById('ticketTotal');
+    const ticketDate = document.getElementById('ticketDate');
+    const emptyCartMessage = document.getElementById('emptyCartMessage');
+    const checkoutTicket = document.getElementById('checkoutTicket');
+    
+    // Check if cart is empty
+    if (orderItems.length === 0) {
+        emptyCartMessage.style.display = 'block';
+        checkoutItems.style.display = 'none';
+        checkoutTicket.style.display = 'none';
+    } else {
+        emptyCartMessage.style.display = 'none';
+        checkoutItems.style.display = 'flex';
+        checkoutTicket.style.display = 'block';
+        
+        // Clear previous items
+        checkoutItems.innerHTML = '';
+        ticketItems.innerHTML = '';
+        
+        // Add each item to checkout
+        orderItems.forEach((item, index) => {
+            // Order item card
+            const itemCard = document.createElement('div');
+            itemCard.className = 'order-item';
+            itemCard.innerHTML = `
+                <div class="item-details">
+                    <div class="item-name">${item.name}</div>
+                    <div class="item-price">₦${item.price.toFixed(2)}</div>
+                </div>
+                <button class="remove-item" onclick="removeFromCheckout(${index})">×</button>
+            `;
+            checkoutItems.appendChild(itemCard);
+            
+            // Ticket item
+            const ticketRow = document.createElement('div');
+            ticketRow.className = 'ticket-row';
+            ticketRow.innerHTML = `
+                <span>${item.name}</span>
+                <span>₦${item.price.toFixed(2)}</span>
+            `;
+            ticketItems.appendChild(ticketRow);
+        });
+        
+        // Update total
+        ticketTotal.textContent = `₦${totalPrice.toFixed(2)}`;
+        
+        // Set date
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+        ticketDate.textContent = dateStr;
+    }
+    
+    // Show overlay
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Close checkout modal
+function closeCheckout() {
+    const overlay = document.getElementById('checkoutOverlay');
+    const successMessage = document.getElementById('successMessage');
+    
+    overlay.classList.remove('active');
+    successMessage.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+// Remove item from checkout
+function removeFromCheckout(index) {
+    // Remove from order
+    const removedItem = orderItems.splice(index, 1)[0];
+    totalPrice -= removedItem.price;
+    
+    // Update order modal
+    updateOrderModal();
+    
+    // Refresh checkout
+    openCheckout();
+}
+
+// Pay manually
+function payManually() {
+    if (orderItems.length === 0) return;
+    
+    const successMessage = document.getElementById('successMessage');
+    successMessage.style.display = 'block';
+    successMessage.textContent = 'Order confirmed! Please pay at the counter. 💵';
+    
+    setTimeout(() => {
+        // Clear order
+        orderItems = [];
+        totalPrice = 0;
+        updateOrderModal();
+        closeCheckout();
+    }, 2000);
+}
+
+// Pay online
+function payOnline() {
+    if (orderItems.length === 0) return;
+    
+    const successMessage = document.getElementById('successMessage');
+    successMessage.style.display = 'block';
+    successMessage.textContent = 'Redirecting to payment gateway... 💳';
+    
+    setTimeout(() => {
+        // Simulate payment processing
+        successMessage.textContent = 'Payment successful! Order confirmed. 🎉';
+        
+        setTimeout(() => {
+            // Clear order
+            orderItems = [];
+            totalPrice = 0;
+            updateOrderModal();
+            closeCheckout();
+        }, 2000);
+    }, 1500);
+}
+
+// Close checkout when clicking outside
+document.addEventListener('click', function(event) {
+    const overlay = document.getElementById('checkoutOverlay');
+    if (overlay && event.target === overlay) {
+        closeCheckout();
+    }
 });
