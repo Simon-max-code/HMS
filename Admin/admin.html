@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMS Admin — Dashboard</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body data-page="dashboard">
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  SIDEBAR                                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Brand -->
+        <div class="sidebar-brand">
+            <div class="brand-mark">H</div>
+            <div class="brand-text">
+                <span class="brand-name">H.M.S</span>
+                <span class="brand-sub">Admin Panel</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose" aria-label="Close sidebar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        <!-- Nav -->
+        <nav class="sidebar-nav">
+            <div class="nav-group">
+                <span class="nav-group-label">Main</span>
+
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    </span>
+                    <span class="nav-label">Dashboard</span>
+                    <span class="nav-badge" id="badge-dashboard"></span>
+                </a>
+
+                <a href="products.html" class="nav-link" data-page="products">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                    </span>
+                    <span class="nav-label">Products</span>
+                </a>
+
+                <a href="orders.html" class="nav-link" data-page="orders">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+                    </span>
+                    <span class="nav-label">Orders</span>
+                    <span class="nav-badge live" id="badge-orders">3</span>
+                </a>
+
+                <a href="transactions.html" class="nav-link" data-page="transactions">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    </span>
+                    <span class="nav-label">Transactions</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <span class="nav-group-label">Staff</span>
+
+                <a href="staff.html" class="nav-link" data-page="staff">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    </span>
+                    <span class="nav-label">Staff</span>
+                </a>
+
+                <a href="attendance.html" class="nav-link" data-page="attendance">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>
+                    </span>
+                    <span class="nav-label">Attendance</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <span class="nav-group-label">Venue</span>
+
+                <a href="tables.html" class="nav-link" data-page="tables">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    </span>
+                    <span class="nav-label">Tables / QR</span>
+                </a>
+
+                <a href="reviews.html" class="nav-link" data-page="reviews">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </span>
+                    <span class="nav-label">Reviews</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <span class="nav-group-label">Account</span>
+
+                <a href="profile.html" class="nav-link" data-page="profile">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </span>
+                    <span class="nav-label">Profile</span>
+                </a>
+
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <span class="nav-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    </span>
+                    <span class="nav-label">Settings</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <div class="sidebar-user">
+                <div class="user-avatar-sm">A</div>
+                <div class="user-info-sm">
+                    <span class="user-name-sm">Admin User</span>
+                    <span class="user-role-sm">Super Admin</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!--  MAIN CONTENT AREA                          -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="main-wrapper">
+
+        <!-- TOP NAVBAR -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle sidebar">
+                    <span></span><span></span><span></span>
+                </button>
+                <div class="page-title-area">
+                    <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                    <span class="page-breadcrumb" id="pageBreadcrumb">Overview &amp; analytics</span>
+                </div>
+            </div>
+
+            <div class="topbar-right">
+                <!-- Live clock -->
+                <div class="topbar-clock" id="topbarClock">--:--</div>
+
+                <!-- Notifications -->
+                <button class="topbar-btn notif-btn" id="notifBtn" aria-label="Notifications">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                    <span class="notif-dot"></span>
+                </button>
+
+                <!-- Profile -->
+                <div class="topbar-profile" id="profileDropdownToggle">
+                    <div class="user-avatar">A</div>
+                    <div class="user-meta">
+                        <span class="user-name">Admin</span>
+                        <span class="user-role">Super Admin</span>
+                    </div>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+
+                    <!-- Profile dropdown -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <a href="profile.html" class="dropdown-item">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            View Profile
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                            Settings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item danger" onclick="handleLogout()">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- PAGE CONTENT -->
+        <main class="page-content" id="pageContent">
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- DASHBOARD PAGE CONTENT (placeholder)   -->
+            <!-- ═══════════════════════════════════════ -->
+
+            <!-- Stats Row -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                    </div>
+                    <div class="stat-body">
+                        <span class="stat-label">Total Orders</span>
+                        <span class="stat-value">248</span>
+                        <span class="stat-delta up">+12% today</span>
+                    </div>
+                </div>
+
+                <div class="stat-card accent">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="stat-body">
+                        <span class="stat-label">Pending Orders</span>
+                        <span class="stat-value">3</span>
+                        <span class="stat-delta neutral">Live</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="stat-body">
+                        <span class="stat-label">Served Orders</span>
+                        <span class="stat-value">245</span>
+                        <span class="stat-delta up">98.8% rate</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    </div>
+                    <div class="stat-body">
+                        <span class="stat-label">Revenue</span>
+                        <span class="stat-value">₦487k</span>
+                        <span class="stat-delta up">+8% this week</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    </div>
+                    <div class="stat-body">
+                        <span class="stat-label">Active Tables</span>
+                        <span class="stat-value">7 / 12</span>
+                        <span class="stat-delta neutral">Currently</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <div class="stat-body">
+                        <span class="stat-label">Staff Present</span>
+                        <span class="stat-value">9</span>
+                        <span class="stat-delta up">On shift</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Recent Orders + Notifications -->
+            <div class="dashboard-grid">
+
+                <!-- Recent Orders Table -->
+                <section class="panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Recent Orders</h2>
+                        <a href="orders.html" class="panel-action">View all →</a>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Table</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- connect to backend later -->
+                                <tr>
+                                    <td><span class="mono">#ORD-0248</span></td>
+                                    <td>Table 4</td>
+                                    <td>Jollof Rice, Coke × 2</td>
+                                    <td>₦2,597</td>
+                                    <td><span class="badge pending">Pending</span></td>
+                                    <td class="mono muted">2 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="mono">#ORD-0247</span></td>
+                                    <td>Table 7</td>
+                                    <td>Grilled Fish, Craft Beer</td>
+                                    <td>₦2,999</td>
+                                    <td><span class="badge pending">Pending</span></td>
+                                    <td class="mono muted">5 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="mono">#ORD-0246</span></td>
+                                    <td>Table 2</td>
+                                    <td>Pepper Soup, Mojito</td>
+                                    <td>₦2,499</td>
+                                    <td><span class="badge served">Served</span></td>
+                                    <td class="mono muted">18 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="mono">#ORD-0245</span></td>
+                                    <td>Table 9</td>
+                                    <td>Nkwobi, Goat Meat × 2</td>
+                                    <td>₦598</td>
+                                    <td><span class="badge served">Served</span></td>
+                                    <td class="mono muted">32 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="mono">#ORD-0244</span></td>
+                                    <td>Table 1</td>
+                                    <td>Pasta Carbonara, Espresso</td>
+                                    <td>₦1,698</td>
+                                    <td><span class="badge served">Served</span></td>
+                                    <td class="mono muted">45 min ago</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="mono">#ORD-0243</span></td>
+                                    <td>Table 6</td>
+                                    <td>Cheese Platter, Beverages</td>
+                                    <td>₦3,498</td>
+                                    <td><span class="badge pending">Pending</span></td>
+                                    <td class="mono muted">1 hr ago</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Notification Panel -->
+                <section class="panel notif-panel">
+                    <div class="panel-header">
+                        <h2 class="panel-title">Notifications</h2>
+                        <button class="panel-action" onclick="clearNotifications()">Clear all</button>
+                    </div>
+                    <div class="notif-list" id="notifList">
+                        <!-- connect to backend later -->
+                        <div class="notif-item unread">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text"><strong>Table 4</strong> placed a new order</p>
+                                <span class="notif-time">2 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item unread">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text"><strong>Table 7</strong> placed a new order</p>
+                                <span class="notif-time">5 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item unread">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text"><strong>Staff Chidi</strong> checked in</p>
+                                <span class="notif-time">10 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text"><strong>Order #ORD-0246</strong> marked as served</p>
+                                <span class="notif-time">18 min ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text"><strong>Low stock alert:</strong> Craft Beer running low</p>
+                                <span class="notif-time">1 hr ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text"><strong>Table 6</strong> placed a new order</p>
+                                <span class="notif-time">1 hr ago</span>
+                            </div>
+                        </div>
+                        <div class="notif-item">
+                            <div class="notif-dot-indicator"></div>
+                            <div class="notif-body">
+                                <p class="notif-text">New review received — ★★★★★</p>
+                                <span class="notif-time">2 hrs ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+        </main>
+    </div><!-- /main-wrapper -->
+
+    <script src="admin.js"></script>
+</body>
+</html>

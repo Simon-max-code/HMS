@@ -17,7 +17,6 @@ const categoryTabs = {
         { id: 'cat-coffee-tea', label: 'Coffee', icon: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=100' },
         { id: 'cat-soft-drinks', label: 'Soft', icon: 'https://images.unsplash.com/photo-1581006852262-e4307cf6283a?w=100' },
         { id: 'cat-beer', label: 'Beer', icon: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100' },
-        { id: 'cat-whiskey', label: 'whiskey', icon: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=100' },
         { id: 'cat-juices', label: 'Juices', icon: 'https://images.unsplash.com/photo-1597318167272-600e9a20b637?w=100' }
     ],
     assortments: [
@@ -145,7 +144,7 @@ function updateOrderModal() {
     if (orderItems.length > 0) {
         modal.classList.add('show');
         itemCount.textContent = `${orderItems.length} ${orderItems.length === 1 ? 'item' : 'items'}`;
-        totalPriceEl.textContent = `â‚¦${totalPrice.toFixed(2)}`;
+        totalPriceEl.textContent = `₦${totalPrice.toFixed(2)}`;
     } else {
         modal.classList.remove('show');
     }
@@ -177,10 +176,12 @@ function toggleLayout() {
     // Update icon
     if (isListView) {
         toggleBtn.classList.add('list-view');
-        layoutIcon.textContent = 'â–¦'; // Grid icon
+        // when showing list view we switch icon to a grid symbol
+        layoutIcon.textContent = '🔳';
     } else {
         toggleBtn.classList.remove('list-view');
-        layoutIcon.textContent = 'â˜°'; // List icon
+        // default is grid representation
+        layoutIcon.textContent = '☰';
     }
 }
 
@@ -271,7 +272,8 @@ function openCheckout() {
         
         // Set date
         const now = new Date();
-        const dateStr = now.toLocaleDateString('en-US', { 
+        // include time as well; use toLocaleString since date-only formatter ignores time options
+        const dateStr = now.toLocaleString('en-US', { 
             year: 'numeric', 
             month: 'long', 
             day: 'numeric',
