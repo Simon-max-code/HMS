@@ -60,29 +60,54 @@ function initPageMeta() {
     document.title = `HMS Admin — ${meta.title}`;
 }
 
-// ── SIDEBAR TOGGLE (mobile) ────────────────────────────
+// ── SIDEBAR TOGGLE (mobile & desktop collapse) ────────
 function initSidebarToggle() {
-    const sidebar     = document.getElementById('sidebar');
-    const overlay     = document.getElementById('sidebarOverlay');
-    const menuToggle  = document.getElementById('menuToggle');
+    // Support both old (#sidebar) and new (#adminSidebar) IDs
+    const sidebar = document.getElementById('sidebar') || document.getElementById('adminSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    // Support both old (#menuToggle) and new (#mobileMenuBtn) IDs
+    const menuToggle = document.getElementById('menuToggle') || document.getElementById('mobileMenuBtn');
     const sidebarClose = document.getElementById('sidebarClose');
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
 
+    // Desktop Collapse Logic
+    function toggleCollapse() {
+        sidebar?.classList.toggle('collapsed');
+        const isCollapsed = sidebar?.classList.contains('collapsed');
+        localStorage.setItem('sidebarCollapsed', isCollapsed ? '1' : '0');
+    }
+
+    // Mobile Drawer Logic
     function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('visible');
-        menuToggle.classList.add('open');
+        sidebar?.classList.add('open');
+        sidebar?.classList.add('mobile-open'); // Support both class names
+        overlay?.classList.add('visible');
+        menuToggle?.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
 
     function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('visible');
-        menuToggle.classList.remove('open');
+        sidebar?.classList.remove('open');
+        sidebar?.classList.remove('mobile-open');
+        overlay?.classList.remove('visible');
+        menuToggle?.classList.remove('open');
         document.body.style.overflow = '';
     }
 
-    menuToggle?.addEventListener('click', () => {
-        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+    // Restore collapse state on load
+    if (localStorage.getItem('sidebarCollapsed') === '1' && window.innerWidth > 900) {
+        sidebar?.classList.add('collapsed');
+    }
+
+    menuToggle?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = sidebar?.classList.contains('open') || sidebar?.classList.contains('mobile-open');
+        isOpen ? closeSidebar() : openSidebar();
+    });
+
+    sidebarToggleBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleCollapse();
     });
 
     sidebarClose?.addEventListener('click', closeSidebar);
@@ -91,7 +116,7 @@ function initSidebarToggle() {
     // Close sidebar on nav link click (mobile UX)
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) closeSidebar();
+            if (window.innerWidth <= 900) closeSidebar();
         });
     });
 }
