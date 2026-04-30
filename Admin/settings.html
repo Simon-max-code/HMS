@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HMS Admin — Settings</title>
+  <link rel="stylesheet" href="admin-layout.css" />
+  <style>
+    .page-hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
+
+    .page-hero p {
+      margin: 6px 0 0;
+      color: var(--grey-4);
+      font-size: 13px;
+      max-width: 560px;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .settings-card {
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .settings-card h2 {
+      margin: 0 0 18px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 12px;
+      border: var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font-display);
+      font-size: 14px;
+      background: var(--white);
+      color: var(--black);
+    }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .toggle-input {
+      padding-right: 0;
+    }
+
+    .toggle-btn {
+      padding: 10px 14px;
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--grey-1);
+      color: var(--white);
+      cursor: pointer;
+      font-family: var(--font-display);
+      font-size: 13px;
+    }
+
+    .payment-options {
+      display: grid;
+      gap: 10px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .payment-option input {
+      accent-color: var(--green);
+    }
+
+    .payment-option:hover {
+      background: var(--grey-1);
+    }
+
+    .logo-preview {
+      width: 96px;
+      height: 96px;
+      border-radius: 16px;
+      border: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--grey-6);
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .logo-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .readonly-field {
+      background: var(--grey-1);
+    }
+
+    .save-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 900px) {
+      .settings-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-page="settings">
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">H</div>
+        <div>
+          <div class="logo-text">HMS</div>
+          <div class="logo-sub">Bar &amp; Lounge</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-link" href="dashboard.html" data-page="dashboard">
+          <span class="nav-icon">▦</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-link" href="products.html" data-page="products">
+          <span class="nav-icon">◈</span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a class="nav-link" href="orders.html" data-page="orders">
+          <span class="nav-icon">≡</span>
+          <span class="nav-label">Orders</span>
+        </a>
+        <a class="nav-link" href="transactions.html" data-page="transactions">
+          <span class="nav-icon">₦</span>
+          <span class="nav-label">Transactions</span>
+        </a>
+
+        <div class="nav-section-label">People</div>
+        <a class="nav-link" href="staff.html" data-page="staff">
+          <span class="nav-icon">◎</span>
+          <span class="nav-label">Staff</span>
+        </a>
+        <a class="nav-link" href="attendance.html" data-page="attendance">
+          <span class="nav-icon">✓</span>
+          <span class="nav-label">Attendance</span>
+        </a>
+
+        <div class="nav-section-label">Venue</div>
+        <a class="nav-link" href="tables.html" data-page="tables">
+          <span class="nav-icon">⊞</span>
+          <span class="nav-label">Tables / QR Codes</span>
+        </a>
+        <a class="nav-link" href="reviews.html" data-page="reviews">
+          <span class="nav-icon">★</span>
+          <span class="nav-label">Reviews</span>
+        </a>
+
+        <div class="nav-section-label">Account</div>
+        <a class="nav-link" href="profile.html" data-page="profile">
+          <span class="nav-icon">○</span>
+          <span class="nav-label">Profile</span>
+        </a>
+        <a class="nav-link active" href="settings.html" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-toggle" id="sidebarToggleBtn">
+          <span class="toggle-icon">◁</span>
+          <span class="toggle-text">Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="topbar-mobile-toggle" id="menuToggle">☰</button>
+        <div class="topbar-title">Settings</div>
+        <div class="topbar-actions">
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="topbar-avatar" title="Admin">AD</div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="page-hero">
+          <div>
+            <h1>Settings</h1>
+            <p>Configure payment providers, session timing, lounge branding, and domain settings from one admin panel.</p>
+          </div>
+        </section>
+
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h2>Payment settings</h2>
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="paymentProvider" value="paystack" checked>
+                <span>Paystack (placeholder)</span>
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="paymentProvider" value="flutterwave">
+                <span>Flutterwave (placeholder)</span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="paymentPublicKey">Public key</label>
+              <div class="input-group">
+                <input type="password" class="toggle-input" id="paymentPublicKey" value="pk_test_1234abcd" placeholder="Public key">
+                <button type="button" class="toggle-btn" id="togglePublicKey">Show</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="paymentSecretKey">Secret key</label>
+              <div class="input-group">
+                <input type="password" class="toggle-input" id="paymentSecretKey" value="sk_test_4321dcba" placeholder="Secret key">
+                <button type="button" class="toggle-btn" id="toggleSecretKey">Show</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2>Lounge info</h2>
+            <div class="form-group">
+              <label for="loungeName">Lounge name</label>
+              <input type="text" id="loungeName" value="HMS Bar & Lounge">
+            </div>
+            <div class="form-group">
+              <label for="logoUpload">Logo upload</label>
+              <input type="file" id="logoUpload" accept="image/*">
+              <div class="logo-preview" id="logoPreview">
+                <img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Lounge logo">
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2>Session timeout</h2>
+            <div class="form-group">
+              <label for="sessionTimeout">Inactivity timeout</label>
+              <select id="sessionTimeout">
+                <option value="5">5 minutes</option>
+                <option value="10" selected>10 minutes</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="sessionNote">Note</label>
+              <textarea id="sessionNote" rows="3" readonly>Session timeout controls how long admin sessions remain active during inactivity.</textarea>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2>System configuration</h2>
+            <div class="form-group">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="NGN" selected>NGN</option>
+                <option value="USD">USD</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="timezone">Timezone</label>
+              <select id="timezone">
+                <option value="Africa/Lagos" selected>Africa/Lagos</option>
+                <option value="UTC">UTC</option>
+                <option value="Europe/London">Europe/London</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="supportEmail">Support email</label>
+              <input type="email" id="supportEmail" value="support@hmsbar.com">
+            </div>
+            <div class="form-group">
+              <label for="maintenanceMode">Maintenance mode</label>
+              <select id="maintenanceMode">
+                <option value="off" selected>Off</option>
+                <option value="on">On</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2>Domain / hosting</h2>
+            <div class="form-group">
+              <label for="domainName">Domain</label>
+              <input type="text" id="domainName" value="admin.hmsbar.com" class="readonly-field" readonly>
+            </div>
+            <div class="form-group">
+              <label for="hostingProvider">Hosting provider</label>
+              <input type="text" id="hostingProvider" value="Netlify" class="readonly-field" readonly>
+            </div>
+            <div class="form-group">
+              <label for="environment">Environment</label>
+              <input type="text" id="environment" value="Production" class="readonly-field" readonly>
+            </div>
+          </div>
+        </div>
+
+        <div class="save-actions">
+          <button class="btn btn-secondary" id="resetSettings" type="button">Reset</button>
+          <button class="btn btn-primary" id="saveSettings" type="button">Save Settings</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    const logoUpload = document.getElementById('logoUpload');
+    const logoPreview = document.getElementById('logoPreview');
+    const saveSettings = document.getElementById('saveSettings');
+    const resetSettings = document.getElementById('resetSettings');
+    const paymentProviderInputs = document.querySelectorAll('input[name="paymentProvider"]');
+    const loungeName = document.getElementById('loungeName');
+    const paymentPublicKey = document.getElementById('paymentPublicKey');
+    const paymentSecretKey = document.getElementById('paymentSecretKey');
+    const togglePublicKey = document.getElementById('togglePublicKey');
+    const toggleSecretKey = document.getElementById('toggleSecretKey');
+    const sessionTimeout = document.getElementById('sessionTimeout');
+    const currency = document.getElementById('currency');
+    const timezone = document.getElementById('timezone');
+    const supportEmail = document.getElementById('supportEmail');
+    const maintenanceMode = document.getElementById('maintenanceMode');
+
+    const initialSettings = {
+      provider: 'paystack',
+      publicKey: 'pk_test_1234abcd',
+      secretKey: 'sk_test_4321dcba',
+      loungeName: 'HMS Bar & Lounge',
+      timeout: '10',
+      currency: 'NGN',
+      timezone: 'Africa/Lagos',
+      supportEmail: 'support@hmsbar.com',
+      maintenanceMode: 'off',
+    };
+
+    function handleLogoPreview(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        logoPreview.innerHTML = `<img src="${reader.result}" alt="Lounge logo">`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function toggleVisibility(input, button) {
+      const hidden = input.type === 'password';
+      input.type = hidden ? 'text' : 'password';
+      button.textContent = hidden ? 'Hide' : 'Show';
+    }
+
+    function saveSettingsHandler() {
+      if (typeof showToast === 'function') {
+        showToast('Settings saved successfully', 'success');
+      }
+    }
+
+    function resetSettingsHandler() {
+      paymentProviderInputs.forEach(input => {
+        input.checked = input.value === initialSettings.provider;
+      });
+      paymentPublicKey.value = initialSettings.publicKey;
+      paymentSecretKey.value = initialSettings.secretKey;
+      if (paymentPublicKey.type !== 'password') toggleVisibility(paymentPublicKey, togglePublicKey);
+      if (paymentSecretKey.type !== 'password') toggleVisibility(paymentSecretKey, toggleSecretKey);
+      loungeName.value = initialSettings.loungeName;
+      sessionTimeout.value = initialSettings.timeout;
+      currency.value = initialSettings.currency;
+      timezone.value = initialSettings.timezone;
+      supportEmail.value = initialSettings.supportEmail;
+      maintenanceMode.value = initialSettings.maintenanceMode;
+      logoPreview.innerHTML = '<img src="https://via.placeholder.com/100x100.png?text=Logo" alt="Lounge logo">';
+      if (typeof showToast === 'function') {
+        showToast('Settings reset to defaults', 'default');
+      }
+    }
+
+    logoUpload.addEventListener('change', handleLogoPreview);
+    togglePublicKey.addEventListener('click', () => toggleVisibility(paymentPublicKey, togglePublicKey));
+    toggleSecretKey.addEventListener('click', () => toggleVisibility(paymentSecretKey, toggleSecretKey));
+    saveSettings.addEventListener('click', saveSettingsHandler);
+    resetSettings.addEventListener('click', resetSettingsHandler);
+  </script>
+</body>
+</html>
