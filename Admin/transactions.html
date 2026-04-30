@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HMS Admin — Transactions</title>
+  <link rel="stylesheet" href="admin-layout.css" />
+  <style>
+    .page-hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
+
+    .page-hero p {
+      margin: 6px 0 0;
+      color: var(--grey-4);
+      font-size: 13px;
+      max-width: 560px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(170px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .toolbar .filter-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .toolbar label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(160px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      padding: 18px;
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .summary-card .label {
+      display: block;
+      margin-bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+    }
+
+    .summary-card .value {
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .transactions-panel {
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .transactions-panel-header {
+      padding: 18px 20px;
+      border-bottom: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .transactions-panel-header h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .transactions-panel-body {
+      overflow-x: auto;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      min-width: 90px;
+    }
+
+    .status-paid { color: var(--green); background: rgba(45, 206, 106, 0.12); border-color: rgba(45, 206, 106, 0.3); }
+    .status-failed { color: var(--accent); background: rgba(230, 48, 34, 0.12); border-color: rgba(230, 48, 34, 0.25); }
+    .status-pending { color: var(--yellow); background: rgba(245, 197, 24, 0.15); border-color: rgba(245, 197, 24, 0.35); }
+
+    .table-wrapper { min-width: 720px; }
+
+    .data-table td:nth-child(1) { font-family: var(--font-mono); font-size: 12px; color: var(--grey-4); }
+
+    .data-table td:nth-child(2) { font-family: var(--font-display); }
+
+    .data-table td:nth-child(3) { text-transform: capitalize; }
+
+    @media (max-width: 1000px) {
+      .toolbar { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+      .page-hero { align-items: stretch; }
+    }
+
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .toolbar-actions { justify-content: stretch; flex-direction: column; }
+      .toolbar-actions .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body data-page="transactions">
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">H</div>
+        <div>
+          <div class="logo-text">HMS</div>
+          <div class="logo-sub">Bar &amp; Lounge</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-link" href="dashboard.html" data-page="dashboard">
+          <span class="nav-icon">▦</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-link" href="products.html" data-page="products">
+          <span class="nav-icon">◈</span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a class="nav-link" href="orders.html" data-page="orders">
+          <span class="nav-icon">≡</span>
+          <span class="nav-label">Orders</span>
+        </a>
+        <a class="nav-link active" href="transactions.html" data-page="transactions">
+          <span class="nav-icon">₦</span>
+          <span class="nav-label">Transactions</span>
+        </a>
+
+        <div class="nav-section-label">People</div>
+        <a class="nav-link" href="staff.html" data-page="staff">
+          <span class="nav-icon">◎</span>
+          <span class="nav-label">Staff</span>
+        </a>
+        <a class="nav-link" href="attendance.html" data-page="attendance">
+          <span class="nav-icon">✓</span>
+          <span class="nav-label">Attendance</span>
+        </a>
+
+        <div class="nav-section-label">Venue</div>
+        <a class="nav-link" href="tables.html" data-page="tables">
+          <span class="nav-icon">⊞</span>
+          <span class="nav-label">Tables / QR Codes</span>
+        </a>
+        <a class="nav-link" href="reviews.html" data-page="reviews">
+          <span class="nav-icon">★</span>
+          <span class="nav-label">Reviews</span>
+        </a>
+
+        <div class="nav-section-label">Account</div>
+        <a class="nav-link" href="profile.html" data-page="profile">
+          <span class="nav-icon">○</span>
+          <span class="nav-label">Profile</span>
+        </a>
+        <a class="nav-link" href="settings.html" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-toggle" id="sidebarToggleBtn">
+          <span class="toggle-icon">◁</span>
+          <span class="toggle-text">Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="topbar-mobile-toggle" id="menuToggle">☰</button>
+        <div class="topbar-title">Transactions</div>
+        <div class="topbar-actions">
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="topbar-avatar" title="Admin">AD</div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="page-hero">
+          <div>
+            <h1>Payments</h1>
+            <p>Review recent payment activity, filter by date and method, and export transaction data for reconciliation.</p>
+          </div>
+        </section>
+
+        <div class="toolbar">
+          <div class="filter-group">
+            <label for="filterMethod">Payment method</label>
+            <select class="input" id="filterMethod">
+              <option value="all">All methods</option>
+              <option value="online">Online</option>
+              <option value="manual">Manual</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterFrom">From</label>
+            <input class="input" id="filterFrom" type="date" />
+          </div>
+          <div class="filter-group">
+            <label for="filterTo">To</label>
+            <input class="input" id="filterTo" type="date" />
+          </div>
+          <div class="toolbar-actions">
+            <button class="btn btn-accent" id="exportButton" type="button">Export</button>
+          </div>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="label">Total transactions</span>
+            <span class="value" id="summaryTotal">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="label">Total volume</span>
+            <span class="value" id="summaryVolume">₦0</span>
+          </div>
+          <div class="summary-card">
+            <span class="label">Online payments</span>
+            <span class="value" id="summaryOnline">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="label">Manual payments</span>
+            <span class="value" id="summaryManual">0</span>
+          </div>
+        </div>
+
+        <div class="transactions-panel card">
+          <div class="transactions-panel-header">
+            <h2>Payment records</h2>
+          </div>
+          <div class="transactions-panel-body table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    const payments = [
+      { id: 'ORD-1029', amount: 18900, method: 'online', status: 'paid', date: '2026-04-30T09:22:00' },
+      { id: 'ORD-1028', amount: 7200, method: 'manual', status: 'paid', date: '2026-04-30T08:51:00' },
+      { id: 'ORD-1027', amount: 13450, method: 'online', status: 'pending', date: '2026-04-29T19:40:00' },
+      { id: 'ORD-1026', amount: 9900, method: 'manual', status: 'failed', date: '2026-04-29T17:13:00' },
+      { id: 'ORD-1025', amount: 20500, method: 'online', status: 'paid', date: '2026-04-28T14:02:00' },
+      { id: 'ORD-1024', amount: 12500, method: 'manual', status: 'paid', date: '2026-04-27T20:55:00' },
+      { id: 'ORD-1023', amount: 4800, method: 'online', status: 'pending', date: '2026-04-27T16:30:00' },
+      { id: 'ORD-1022', amount: 16600, method: 'manual', status: 'paid', date: '2026-04-26T11:20:00' }
+    ];
+
+    const transactionsBody = document.getElementById('transactionsBody');
+    const filterMethod = document.getElementById('filterMethod');
+    const filterFrom = document.getElementById('filterFrom');
+    const filterTo = document.getElementById('filterTo');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const summaryVolume = document.getElementById('summaryVolume');
+    const summaryOnline = document.getElementById('summaryOnline');
+    const summaryManual = document.getElementById('summaryManual');
+    const exportButton = document.getElementById('exportButton');
+
+    function createStatusChip(value) {
+      const span = document.createElement('span');
+      span.className = `status-chip status-${value}`;
+      span.textContent = value;
+      return span;
+    }
+
+    function renderTransactions(list) {
+      transactionsBody.innerHTML = '';
+      list.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.id}</td>
+          <td>${formatNaira(item.amount)}</td>
+          <td>${item.method}</td>
+          <td></td>
+          <td>${formatDate(item.date)} ${new Date(item.date).toLocaleTimeString('en-NG', { hour: '2-digit', minute: '2-digit' })}</td>
+        `;
+
+        const statusCell = row.querySelector('td:nth-child(4)');
+        statusCell.appendChild(createStatusChip(item.status));
+        transactionsBody.appendChild(row);
+      });
+
+      summaryTotal.textContent = list.length;
+      summaryVolume.textContent = formatNaira(list.reduce((sum, item) => sum + item.amount, 0));
+      summaryOnline.textContent = list.filter(item => item.method === 'online').length;
+      summaryManual.textContent = list.filter(item => item.method === 'manual').length;
+    }
+
+    function applyFilters() {
+      const method = filterMethod.value;
+      const fromDate = filterFrom.value ? new Date(filterFrom.value) : null;
+      const toDate = filterTo.value ? new Date(filterTo.value) : null;
+
+      const filtered = payments.filter(item => {
+        if (method !== 'all' && item.method !== method) return false;
+
+        const itemDate = new Date(item.date);
+        if (fromDate && itemDate < fromDate) return false;
+        if (toDate) {
+          const inclusiveTo = new Date(filterTo.value);
+          inclusiveTo.setHours(23, 59, 59, 999);
+          if (itemDate > inclusiveTo) return false;
+        }
+
+        return true;
+      });
+
+      renderTransactions(filtered);
+    }
+
+    filterMethod.addEventListener('change', applyFilters);
+    filterFrom.addEventListener('change', applyFilters);
+    filterTo.addEventListener('change', applyFilters);
+
+    exportButton.addEventListener('click', () => {
+      if (typeof showToast === 'function') {
+        showToast('Export is UI only for now. Data can be downloaded once backend is connected.', 'success');
+      } else {
+        alert('Export is UI only for now.');
+      }
+    });
+
+    renderTransactions(payments);
+  </script>
+</body>
+</html>
