@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders — HMS Admin</title>
+  <link rel="stylesheet" href="admin-layout.css">
+  <style>
+    /* ── Orders page-specific styles ── */
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat-chip {
+      background: var(--white);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .stat-chip-icon {
+      font-size: 20px;
+      width: 40px; height: 40px;
+      background: var(--black);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--white);
+    }
+
+    .stat-chip-num {
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .stat-chip-lbl {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--grey-4);
+    }
+
+    /* ── Toolbar ── */
+    .page-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-search {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+    }
+
+    .toolbar-search .input { padding-left: 36px; }
+
+    .toolbar-search-icon {
+      position: absolute;
+      left: 11px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      pointer-events: none;
+      color: var(--grey-4);
+    }
+
+    .toolbar-filters {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+
+    .toolbar-filters select.input {
+      width: auto;
+      min-width: 140px;
+    }
+
+    .toolbar-right {
+      display: flex; gap: 10px; margin-left: auto;
+    }
+
+    /* ── Orders table wrapper ── */
+    .orders-table-wrap {
+      overflow-x: auto;
+      border: var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      background: var(--white);
+    }
+
+    /* ── Pending row highlight ── */
+    .row-pending td {
+      background: #1e1200 !important;
+      color: var(--white) !important;
+    }
+
+    .row-pending:hover td {
+      background: #2a1a00 !important;
+    }
+
+    .row-pending .order-id-cell { color: var(--yellow) !important; }
+    .row-pending .order-table-cell { color: rgba(255,255,255,0.85) !important; }
+    .row-pending .order-items-cell { color: rgba(255,255,255,0.7) !important; }
+    .row-pending .order-price-cell { color: var(--white) !important; }
+    .row-pending .order-time-cell { color: rgba(255,255,255,0.5) !important; }
+
+    .row-served td {
+      background: var(--white);
+    }
+
+    /* Table cell helpers */
+    .order-id-cell {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--grey-4);
+    }
+
+    .order-table-cell {
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .order-items-cell {
+      font-size: 12px;
+      color: var(--grey-4);
+      max-width: 260px;
+    }
+
+    .order-items-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .item-pill {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: 100px;
+      border: 1.5px solid currentColor;
+      white-space: nowrap;
+    }
+
+    .row-pending .item-pill {
+      color: rgba(255,255,255,0.55);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .row-served .item-pill {
+      color: var(--grey-4);
+      border-color: var(--grey-6);
+    }
+
+    .order-price-cell {
+      font-family: var(--font-display);
+      font-size: 17px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .order-time-cell {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey-4);
+      white-space: nowrap;
+    }
+
+    /* Mark as served button inline */
+    .btn-serve {
+      background: var(--yellow);
+      color: var(--black);
+      border-color: var(--yellow);
+      font-size: 10px;
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+
+    .btn-serve:hover {
+      background: #d4a600;
+      border-color: #d4a600;
+    }
+
+    /* Already served indicator */
+    .served-check {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--green);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── Pending pulse indicator ── */
+    .pulse-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--yellow);
+      margin-right: 6px;
+      animation: pulseDot 1.6s ease-in-out infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    /* ── Pending banner ── */
+    .pending-banner {
+      background: var(--yellow);
+      color: var(--black);
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: var(--shadow);
+    }
+
+    .pending-banner-count {
+      font-family: var(--font-display);
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .pending-banner-sep {
+      width: 1px; height: 24px;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .pending-banner-btn {
+      margin-left: auto;
+      background: var(--black);
+      color: var(--yellow);
+      border-color: var(--black);
+    }
+
+    .pending-banner-btn:hover {
+      background: var(--grey-1);
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-state-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.3; }
+
+    .empty-state-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .empty-state-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+    }
+
+    /* ── Pagination ── */
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    .pagination-info {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+    }
+
+    .pagination-btns { display: flex; gap: 6px; }
+
+    .page-btn {
+      width: 32px; height: 32px;
+      background: var(--white);
+      border: 2px solid var(--black);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+    }
+
+    .page-btn:hover, .page-btn.active {
+      background: var(--black); color: var(--white);
+    }
+
+    .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    /* ── Order detail modal ── */
+    .order-detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--grey-6);
+      gap: 12px;
+    }
+
+    .order-detail-row:last-child { border-bottom: none; }
+
+    .od-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--grey-4);
+      flex-shrink: 0;
+    }
+
+    .od-value {
+      font-size: 13px;
+      font-weight: 600;
+      text-align: right;
+    }
+
+    .od-items-grid {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 4px;
+    }
+
+    .od-item-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      border: 2px solid var(--black);
+      background: var(--grey-6);
+    }
+
+    .order-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0 0;
+      margin-top: 8px;
+    }
+
+    .order-total-label {
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .order-total-val {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .stats-strip { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .toolbar-right { margin-left: 0; width: 100%; }
+      .data-table th:nth-child(3),
+      .data-table td:nth-child(3) { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .toolbar-filters { flex-direction: column; width: 100%; }
+      .toolbar-filters select.input { min-width: unset; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- ════════════════ SIDEBAR ════════════════ -->
+  <aside class="sidebar" id="adminSidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">H</div>
+      <div>
+        <div class="logo-text">HMS</div>
+        <div class="logo-sub">Bar &amp; Lounge</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-link" href="dashboard.html" data-page="dashboard.html">
+        <span class="nav-icon">▦</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a class="nav-link" href="products.html" data-page="products.html">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Products</span>
+      </a>
+      <a class="nav-link active" href="orders.html" data-page="orders.html">
+        <span class="nav-icon">≡</span>
+        <span class="nav-label">Orders</span>
+      </a>
+      <a class="nav-link" href="transactions.html" data-page="transactions.html">
+        <span class="nav-icon">₦</span>
+        <span class="nav-label">Transactions</span>
+      </a>
+
+      <div class="nav-section-label">People</div>
+      <a class="nav-link" href="staff.html" data-page="staff.html">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Staff</span>
+      </a>
+      <a class="nav-link" href="attendance.html" data-page="attendance.html">
+        <span class="nav-icon">✓</span>
+        <span class="nav-label">Attendance</span>
+      </a>
+
+      <div class="nav-section-label">Venue</div>
+      <a class="nav-link" href="tables.html" data-page="tables.html">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Tables / QR Codes</span>
+      </a>
+      <a class="nav-link" href="reviews.html" data-page="reviews.html">
+        <span class="nav-icon">★</span>
+        <span class="nav-label">Reviews</span>
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a class="nav-link" href="profile.html" data-page="profile.html">
+        <span class="nav-icon">○</span>
+        <span class="nav-label">Profile</span>
+      </a>
+      <a class="nav-link" href="settings.html" data-page="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-toggle" id="sidebarToggleBtn">
+        <span class="toggle-icon">◁</span>
+        <span class="toggle-text">Collapse</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ════════════════ MAIN ════════════════ -->
+  <div class="main-area">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="topbar-mobile-toggle" id="mobileMenuBtn">☰</button>
+      <div class="topbar-title">ORDERS</div>
+      <div class="topbar-actions">
+        <span class="topbar-date" id="topbarDate"></span>
+        <div class="topbar-avatar" title="Admin">AD</div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- Stats strip -->
+      <div class="stats-strip">
+        <div class="stat-chip">
+          <div class="stat-chip-icon">≡</div>
+          <div>
+            <div class="stat-chip-num" id="statTotal">0</div>
+            <div class="stat-chip-lbl">Total Orders</div>
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-icon" style="background:var(--yellow);color:var(--black)">⏳</div>
+          <div>
+            <div class="stat-chip-num" id="statPending">0</div>
+            <div class="stat-chip-lbl">Pending</div>
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-icon" style="background:var(--green)">✓</div>
+          <div>
+            <div class="stat-chip-num" id="statServed">0</div>
+            <div class="stat-chip-lbl">Served</div>
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-icon" style="background:var(--accent)">₦</div>
+          <div>
+            <div class="stat-chip-num" id="statRevenue">—</div>
+            <div class="stat-chip-lbl">Total Revenue</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending banner (shown when pending orders exist) -->
+      <div class="pending-banner" id="pendingBanner" style="display:none">
+        <span class="pulse-dot"></span>
+        <span class="pending-banner-count" id="pendingBannerCount">0</span>
+        <div class="pending-banner-sep"></div>
+        <span>Pending orders need attention</span>
+        <button class="btn btn-sm pending-banner-btn" onclick="markAllServed()">Mark All as Served</button>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="page-toolbar">
+        <div class="toolbar-search">
+          <span class="toolbar-search-icon">⌕</span>
+          <input type="text" class="input" id="searchInput" placeholder="Search orders, items…">
+        </div>
+
+        <div class="toolbar-filters">
+          <select class="input" id="filterTable">
+            <option value="">All Tables</option>
+          </select>
+          <select class="input" id="filterStatus">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="served">Served</option>
+          </select>
+          <input type="date" class="input" id="filterDate" title="Filter by date" style="min-width:150px">
+        </div>
+
+        <div class="toolbar-right">
+          <button class="btn" onclick="clearFilters()">✕ Clear</button>
+          <button class="btn btn-primary" onclick="exportOrders()">↓ Export</button>
+        </div>
+      </div>
+
+      <!-- Orders Table -->
+      <div class="orders-table-wrap" id="ordersTableWrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Table</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Time</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody"></tbody>
+        </table>
+
+        <!-- Empty state inside table -->
+        <div class="empty-state" id="emptyState" style="display:none">
+          <div class="empty-state-icon">≡</div>
+          <div class="empty-state-title">NO ORDERS FOUND</div>
+          <div class="empty-state-sub">Try adjusting your search or filters</div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <span class="pagination-info" id="paginationInfo"></span>
+        <div class="pagination-btns" id="paginationBtns"></div>
+      </div>
+
+    </main>
+  </div><!-- /main-area -->
+</div><!-- /admin-shell -->
+
+
+<!-- ════════════ ORDER DETAIL MODAL ════════════ -->
+<div class="modal-backdrop" id="orderDetailModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="detailOrderId">ORDER #—</div>
+      <button class="modal-close" onclick="AdminUI.closeModal('orderDetailModal')">✕</button>
+    </div>
+    <div class="modal-body" id="detailModalBody">
+      <!-- populated by JS -->
+    </div>
+    <div class="modal-footer" id="detailModalFooter">
+      <!-- populated by JS -->
+    </div>
+  </div>
+</div>
+
+
+<script src="admin-layout.js"></script>
+<script>
+  // ════════════════════════════════════════════
+  //  orders.js — Orders management logic
+  //  connect to backend later
+  // ════════════════════════════════════════════
+
+  'use strict';
+
+  /* ── Mock Data ── */
+  // connect to backend later: replace with GET /api/orders
+  let orders = [
+    {
+      id: 'ORD-0248', table: 4, tableLabel: 'Table 4',
+      items: ['Jollof Rice', 'Coke × 2'],
+      total: 2597, status: 'pending',
+      date: '2025-04-30', time: '13:42', timestamp: new Date(Date.now() - 2 * 60000)
+    },
+    {
+      id: 'ORD-0247', table: 7, tableLabel: 'Table 7',
+      items: ['Grilled Fish', 'Craft Beer'],
+      total: 2999, status: 'pending',
+      date: '2025-04-30', time: '13:39', timestamp: new Date(Date.now() - 5 * 60000)
+    },
+    {
+      id: 'ORD-0246', table: 2, tableLabel: 'Table 2',
+      items: ['Pepper Soup', 'Mojito'],
+      total: 2499, status: 'served',
+      date: '2025-04-30', time: '13:26', timestamp: new Date(Date.now() - 18 * 60000)
+    },
+    {
+      id: 'ORD-0245', table: 9, tableLabel: 'Table 9',
+      items: ['Nkwobi', 'Goat Meat × 2'],
+      total: 598, status: 'served',
+      date: '2025-04-30', time: '13:12', timestamp: new Date(Date.now() - 32 * 60000)
+    },
+    {
+      id: 'ORD-0244', table: 1, tableLabel: 'Table 1',
+      items: ['Pasta Carbonara', 'Espresso'],
+      total: 1698, status: 'served',
+      date: '2025-04-30', time: '12:59', timestamp: new Date(Date.now() - 45 * 60000)
+    },
+    {
+      id: 'ORD-0243', table: 6, tableLabel: 'Table 6',
+      items: ['Cheese Platter', 'Beverages × 3'],
+      total: 3498, status: 'pending',
+      date: '2025-04-30', time: '12:44', timestamp: new Date(Date.now() - 60 * 60000)
+    },
+    {
+      id: 'ORD-0242', table: 3, tableLabel: 'Table 3',
+      items: ['Margherita Pizza', 'Fresh Juice × 2'],
+      total: 1775, status: 'served',
+      date: '2025-04-30', time: '12:30', timestamp: new Date(Date.now() - 74 * 60000)
+    },
+    {
+      id: 'ORD-0241', table: 5, tableLabel: 'Table 5',
+      items: ['Tomato Soup', 'Garlic Bread'],
+      total: 1048, status: 'served',
+      date: '2025-04-30', time: '12:15', timestamp: new Date(Date.now() - 89 * 60000)
+    },
+    {
+      id: 'ORD-0240', table: 8, tableLabel: 'Table 8',
+      items: ['Caesar Salad', 'Lemonade × 2'],
+      total: 1500, status: 'served',
+      date: '2025-04-30', time: '11:55', timestamp: new Date(Date.now() - 109 * 60000)
+    },
+    {
+      id: 'ORD-0239', table: 11, tableLabel: 'Table 11',
+      items: ['French Fries', 'Craft Beer × 2'],
+      total: 1899, status: 'served',
+      date: '2025-04-30', time: '11:40', timestamp: new Date(Date.now() - 124 * 60000)
+    },
+    {
+      id: 'ORD-0238', table: 12, tableLabel: 'Table 12',
+      items: ['Grilled Veggies', 'Espresso'],
+      total: 1098, status: 'served',
+      date: '2025-04-29', time: '20:10', timestamp: new Date(Date.now() - 18 * 3600000)
+    },
+    {
+      id: 'ORD-0237', table: 4, tableLabel: 'Table 4',
+      items: ['Pepper Soup', 'Goat Meat'],
+      total: 1798, status: 'served',
+      date: '2025-04-29', time: '19:45', timestamp: new Date(Date.now() - 19 * 3600000)
+    },
+    {
+      id: 'ORD-0236', table: 2, tableLabel: 'Table 2',
+      items: ['Jollof Rice × 2', 'Fanta × 2'],
+      total: 816, status: 'served',
+      date: '2025-04-29', time: '18:30', timestamp: new Date(Date.now() - 20 * 3600000)
+    },
+    {
+      id: 'ORD-0235', table: 7, tableLabel: 'Table 7',
+      items: ['Nkwobi', 'Craft Beer × 3'],
+      total: 2300, status: 'served',
+      date: '2025-04-29', time: '17:00', timestamp: new Date(Date.now() - 21 * 3600000)
+    },
+  ];
+
+  /* ── State ── */
+  let currentSearch = '';
+  let currentTable  = '';
+  let currentStatus = '';
+  let currentDate   = '';
+  let currentPage   = 1;
+  const PER_PAGE    = 10;
+
+  /* ── Helpers ── */
+  function fmt(n) {
+    return '₦' + Number(n).toLocaleString('en-NG', { minimumFractionDigits: 0 });
+  }
+
+  function timeAgo(ts) {
+    const diff = Date.now() - new Date(ts).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1)  return 'just now';
+    if (mins < 60) return `${mins}m ago`;
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24)  return `${hrs}h ago`;
+    return `${Math.floor(hrs / 24)}d ago`;
+  }
+
+  /* ── Filter ── */
+  function filtered() {
+    return orders.filter(o => {
+      const q = currentSearch.toLowerCase();
+      const matchQ = !q || o.id.toLowerCase().includes(q)
+        || o.tableLabel.toLowerCase().includes(q)
+        || o.items.some(i => i.toLowerCase().includes(q));
+      const matchT  = !currentTable  || o.table == currentTable;
+      const matchSt = !currentStatus || o.status === currentStatus;
+      const matchD  = !currentDate   || o.date === currentDate;
+      return matchQ && matchT && matchSt && matchD;
+    });
+  }
+
+  /* ── Stats ── */
+  function updateStats() {
+    const all     = orders;
+    const pending = all.filter(o => o.status === 'pending');
+    const served  = all.filter(o => o.status === 'served');
+    const revenue = all.reduce((sum, o) => sum + o.total, 0);
+
+    document.getElementById('statTotal').textContent   = all.length;
+    document.getElementById('statPending').textContent = pending.length;
+    document.getElementById('statServed').textContent  = served.length;
+    document.getElementById('statRevenue').textContent = fmt(revenue);
+
+    // Pending banner
+    const banner = document.getElementById('pendingBanner');
+    const bc     = document.getElementById('pendingBannerCount');
+    if (pending.length > 0) {
+      banner.style.display = '';
+      bc.textContent = `${pending.length} pending order${pending.length > 1 ? 's' : ''}`;
+    } else {
+      banner.style.display = 'none';
+    }
+  }
+
+  /* ── Populate table filter ── */
+  function populateTableFilter() {
+    const sel   = document.getElementById('filterTable');
+    const tables = [...new Set(orders.map(o => o.table))].sort((a, b) => a - b);
+    const prev  = sel.value;
+    sel.innerHTML = '<option value="">All Tables</option>';
+    tables.forEach(t => {
+      const o = document.createElement('option');
+      o.value = t;
+      o.textContent = `Table ${t}`;
+      if (String(t) === prev) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+
+  /* ── Render ── */
+  function render() {
+    const items = filtered();
+    const total = items.length;
+    const totalPages = Math.ceil(total / PER_PAGE) || 1;
+    currentPage = Math.min(currentPage, totalPages);
+    const start = (currentPage - 1) * PER_PAGE;
+    const paged = items.slice(start, start + PER_PAGE);
+
+    const tbody   = document.getElementById('ordersTableBody');
+    const empty   = document.getElementById('emptyState');
+    const table   = document.querySelector('.orders-table-wrap table');
+
+    if (!paged.length) {
+      tbody.innerHTML = '';
+      empty.style.display = '';
+      table.style.display = 'none';
+    } else {
+      empty.style.display = 'none';
+      table.style.display = '';
+
+      tbody.innerHTML = paged.map(o => {
+        const isPending = o.status === 'pending';
+        const rowClass  = isPending ? 'row-pending' : 'row-served';
+        const itemPills = o.items.map(i => `<span class="item-pill">${i}</span>`).join('');
+
+        const actionBtn = isPending
+          ? `<button class="btn btn-sm btn-serve" onclick="markServed('${o.id}')">✓ Serve</button>`
+          : `<span class="served-check">✓ Done</span>`;
+
+        return `
+          <tr class="${rowClass}" data-id="${o.id}">
+            <td class="order-id-cell">
+              ${isPending ? '<span class="pulse-dot"></span>' : ''}
+              <a href="#" onclick="openDetail('${o.id}'); return false" style="color:inherit;text-decoration:underline;text-decoration-color:rgba(255,255,255,0.2)">#${o.id}</a>
+            </td>
+            <td class="order-table-cell">${o.tableLabel}</td>
+            <td class="order-items-cell"><div class="order-items-list">${itemPills}</div></td>
+            <td class="order-price-cell">${fmt(o.total)}</td>
+            <td>
+              <span class="badge ${isPending ? 'badge-yellow' : 'badge-green'}">
+                ${isPending ? 'Pending' : 'Served'}
+              </span>
+            </td>
+            <td class="order-time-cell">${timeAgo(o.timestamp)}</td>
+            <td>${actionBtn}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Pagination
+    const info = document.getElementById('paginationInfo');
+    info.textContent = total
+      ? `Showing ${start + 1}–${Math.min(start + PER_PAGE, total)} of ${total} orders`
+      : 'No orders found';
+
+    const btns = document.getElementById('paginationBtns');
+    btns.innerHTML = '';
+
+    if (totalPages > 1) {
+      const prev = document.createElement('button');
+      prev.className = 'page-btn';
+      prev.textContent = '‹';
+      prev.disabled = currentPage === 1;
+      prev.onclick = () => { currentPage--; render(); };
+      btns.appendChild(prev);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const b = document.createElement('button');
+        b.className = 'page-btn' + (i === currentPage ? ' active' : '');
+        b.textContent = i;
+        b.onclick = (p => () => { currentPage = p; render(); })(i);
+        btns.appendChild(b);
+      }
+
+      const next = document.createElement('button');
+      next.className = 'page-btn';
+      next.textContent = '›';
+      next.disabled = currentPage === totalPages;
+      next.onclick = () => { currentPage++; render(); };
+      btns.appendChild(next);
+    }
+
+    updateStats();
+  }
+
+  /* ── Mark as served ── */
+  function markServed(id) {
+    // connect to backend later: PATCH /api/orders/:id { status: 'served' }
+    const order = orders.find(o => o.id === id);
+    if (!order) return;
+    order.status = 'served';
+    AdminUI.toast(`Order #${id} marked as served`);
+    render();
+  }
+
+  function markAllServed() {
+    // connect to backend later: PATCH /api/orders/batch { status: 'served', ids: [...pendingIds] }
+    const pendingOrders = orders.filter(o => o.status === 'pending');
+    if (!pendingOrders.length) return;
+    pendingOrders.forEach(o => o.status = 'served');
+    AdminUI.toast(`${pendingOrders.length} order${pendingOrders.length > 1 ? 's' : ''} marked as served`);
+    render();
+  }
+
+  /* ── Order Detail Modal ── */
+  function openDetail(id) {
+    const o = orders.find(x => x.id === id);
+    if (!o) return;
+
+    document.getElementById('detailOrderId').textContent = `#${o.id}`;
+
+    const isPending = o.status === 'pending';
+
+    document.getElementById('detailModalBody').innerHTML = `
+      <div class="order-detail-row">
+        <span class="od-label">Table</span>
+        <span class="od-value">${o.tableLabel}</span>
+      </div>
+      <div class="order-detail-row">
+        <span class="od-label">Date &amp; Time</span>
+        <span class="od-value">${o.date} · ${o.time}</span>
+      </div>
+      <div class="order-detail-row" style="flex-direction:column;gap:8px">
+        <span class="od-label">Items Ordered</span>
+        <div class="od-items-grid">
+          ${o.items.map(i => `<span class="od-item-tag">${i}</span>`).join('')}
+        </div>
+      </div>
+      <div class="order-detail-row">
+        <span class="od-label">Status</span>
+        <span class="od-value">
+          <span class="badge ${isPending ? 'badge-yellow' : 'badge-green'}">
+            ${isPending ? 'Pending' : 'Served'}
+          </span>
+        </span>
+      </div>
+      <div class="order-total-row">
+        <span class="order-total-label">TOTAL</span>
+        <span class="order-total-val">${fmt(o.total)}</span>
+      </div>
+    `;
+
+    document.getElementById('detailModalFooter').innerHTML = isPending
+      ? `
+        <button class="btn" onclick="AdminUI.closeModal('orderDetailModal')">Close</button>
+        <button class="btn btn-primary" onclick="markServed('${o.id}'); AdminUI.closeModal('orderDetailModal')">✓ Mark as Served</button>
+      `
+      : `<button class="btn btn-primary" onclick="AdminUI.closeModal('orderDetailModal')">Close</button>`;
+
+    AdminUI.openModal('orderDetailModal');
+  }
+
+  /* ── Clear filters ── */
+  function clearFilters() {
+    currentSearch = '';
+    currentTable  = '';
+    currentStatus = '';
+    currentDate   = '';
+    currentPage   = 1;
+    document.getElementById('searchInput').value  = '';
+    document.getElementById('filterTable').value  = '';
+    document.getElementById('filterStatus').value = '';
+    document.getElementById('filterDate').value   = '';
+    render();
+  }
+
+  /* ── Export (UI only) ── */
+  function exportOrders() {
+    // connect to backend later: GET /api/orders/export?format=csv
+    AdminUI.toast('Export feature coming soon', 'success');
+  }
+
+  /* ── Wire up filters ── */
+  document.getElementById('searchInput').addEventListener('input', function() {
+    currentSearch = this.value; currentPage = 1; render();
+  });
+
+  document.getElementById('filterTable').addEventListener('change', function() {
+    currentTable = this.value; currentPage = 1; render();
+  });
+
+  document.getElementById('filterStatus').addEventListener('change', function() {
+    currentStatus = this.value; currentPage = 1; render();
+  });
+
+  document.getElementById('filterDate').addEventListener('change', function() {
+    currentDate = this.value; currentPage = 1; render();
+  });
+
+  /* ── Init ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    populateTableFilter();
+    render();
+  });
+</script>
+</body>
+</html>
