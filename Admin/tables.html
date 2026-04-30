@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HMS Admin — Tables & QR Codes</title>
+  <link rel="stylesheet" href="admin-layout.css" />
+  <style>
+    .page-hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
+
+    .page-hero p {
+      margin: 6px 0 0;
+      color: var(--grey-4);
+      font-size: 13px;
+      max-width: 560px;
+    }
+
+    .page-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .tables-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .table-card {
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .table-number {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .qr-placeholder {
+      width: 120px;
+      height: 120px;
+      background: var(--grey-6);
+      border: 2px dashed var(--grey-4);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 24px;
+      color: var(--grey-4);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      min-width: 90px;
+      margin-bottom: 12px;
+    }
+
+    .status-active { color: var(--green); background: rgba(45, 206, 106, 0.12); border-color: rgba(45, 206, 106, 0.25); }
+    .status-expired { color: var(--accent); background: rgba(230, 48, 34, 0.12); border-color: rgba(230, 48, 34, 0.25); }
+
+    .timeout-info {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+      margin-bottom: 16px;
+    }
+
+    .generate-btn {
+      background: var(--black);
+      color: var(--white);
+      border: var(--border);
+      padding: 8px 16px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+
+    .generate-btn:hover {
+      background: var(--grey-2);
+    }
+
+    @media (max-width: 640px) {
+      .tables-grid { grid-template-columns: 1fr; }
+      .page-hero { align-items: stretch; }
+    }
+  </style>
+</head>
+<body data-page="tables">
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">H</div>
+        <div>
+          <div class="logo-text">HMS</div>
+          <div class="logo-sub">Bar &amp; Lounge</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-link" href="dashboard.html" data-page="dashboard">
+          <span class="nav-icon">▦</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-link" href="products.html" data-page="products">
+          <span class="nav-icon">◈</span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a class="nav-link" href="orders.html" data-page="orders">
+          <span class="nav-icon">≡</span>
+          <span class="nav-label">Orders</span>
+        </a>
+        <a class="nav-link" href="transactions.html" data-page="transactions">
+          <span class="nav-icon">₦</span>
+          <span class="nav-label">Transactions</span>
+        </a>
+
+        <div class="nav-section-label">People</div>
+        <a class="nav-link" href="staff.html" data-page="staff">
+          <span class="nav-icon">◎</span>
+          <span class="nav-label">Staff</span>
+        </a>
+        <a class="nav-link" href="attendance.html" data-page="attendance">
+          <span class="nav-icon">✓</span>
+          <span class="nav-label">Attendance</span>
+        </a>
+
+        <div class="nav-section-label">Venue</div>
+        <a class="nav-link active" href="tables.html" data-page="tables">
+          <span class="nav-icon">⊞</span>
+          <span class="nav-label">Tables / QR Codes</span>
+        </a>
+        <a class="nav-link" href="reviews.html" data-page="reviews">
+          <span class="nav-icon">★</span>
+          <span class="nav-label">Reviews</span>
+        </a>
+
+        <div class="nav-section-label">Account</div>
+        <a class="nav-link" href="profile.html" data-page="profile">
+          <span class="nav-icon">○</span>
+          <span class="nav-label">Profile</span>
+        </a>
+        <a class="nav-link" href="settings.html" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-toggle" id="sidebarToggleBtn">
+          <span class="toggle-icon">◁</span>
+          <span class="toggle-text">Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="topbar-mobile-toggle" id="menuToggle">☰</button>
+        <div class="topbar-title">Tables & QR Codes</div>
+        <div class="topbar-actions">
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="topbar-avatar" title="Admin">AD</div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="page-hero">
+          <div>
+            <h1>Table Management</h1>
+            <p>Generate QR codes for table sessions. Each session expires after 3 minutes of inactivity, prompting users to rescan and log back into order.html.</p>
+          </div>
+        </section>
+
+        <div class="page-actions">
+          <div></div>
+        </div>
+
+        <div class="tables-grid" id="tablesGrid"></div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    const tables = [
+      { number: 1, expiresAt: Date.now() + 120000 }, // 2 min left
+      { number: 2, expiresAt: Date.now() + 180000 }, // 3 min left
+      { number: 3, expiresAt: null },
+      { number: 4, expiresAt: Date.now() + 60000 }, // 1 min left
+      { number: 5, expiresAt: null },
+      { number: 6, expiresAt: Date.now() + 150000 }, // 2.5 min left
+    ];
+
+    const tablesGrid = document.getElementById('tablesGrid');
+
+    function createStatusBadge(table) {
+      const status = table.expiresAt && table.expiresAt > Date.now() ? 'active' : 'expired';
+      const span = document.createElement('span');
+      span.className = `status-badge status-${status}`;
+      span.textContent = status === 'active' ? 'Active' : 'Expired';
+      return span;
+    }
+
+    function formatTimeLeft(table) {
+      if (!table.expiresAt || table.expiresAt <= Date.now()) return '';
+      const remaining = Math.max(0, table.expiresAt - Date.now());
+      const minutes = Math.floor(remaining / 60000);
+      const seconds = Math.floor((remaining % 60000) / 1000);
+      return `${minutes}m ${seconds}s left`;
+    }
+
+    function renderTables() {
+      tablesGrid.innerHTML = '';
+      tables.forEach(table => {
+        const card = document.createElement('div');
+        card.className = 'table-card';
+        const url = `/order.html?table=${table.number}`;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(url)}`;
+        card.innerHTML = `
+          <div class="table-number">${table.number}</div>
+          <img src="${qrUrl}" alt="QR Code for Table ${table.number}" style="width:120px; height:120px;">
+          <div></div>
+          <div class="timeout-info" id="timeout-${table.number}">${formatTimeLeft(table)}</div>
+          <div style="display:flex; gap:8px; margin-top:12px;">
+            <button class="generate-btn" onclick="refreshQr(${table.number})">Generate / Refresh QR</button>
+            <button class="generate-btn" onclick="copyLink(${table.number})">Copy Link</button>
+          </div>
+        `;
+
+        const statusCell = card.querySelector('div:nth-child(3)');
+        statusCell.appendChild(createStatusBadge(table));
+
+        tablesGrid.appendChild(card);
+      });
+    }
+
+    function updateTimeouts() {
+      tables.forEach(table => {
+        const timeoutEl = document.getElementById(`timeout-${table.number}`);
+        if (timeoutEl) {
+          timeoutEl.textContent = formatTimeLeft(table);
+          if (table.expiresAt && table.expiresAt <= Date.now()) {
+            renderTables(); // Re-render to update status
+          }
+        }
+      });
+    }
+
+    function refreshQr(tableNumber) {
+      const table = tables.find(t => t.number === tableNumber);
+      if (table) {
+        table.expiresAt = Date.now() + 180000; // 3 minutes
+        renderTables();
+        if (typeof showToast === 'function') {
+          showToast(`QR refreshed for Table ${tableNumber}`, 'success');
+        }
+      }
+    }
+
+    function copyLink(tableNumber) {
+      const url = `/order.html?table=${tableNumber}`;
+      navigator.clipboard.writeText(url).then(() => {
+        if (typeof showToast === 'function') {
+          showToast(`Link copied: ${url}`, 'success');
+        }
+      }).catch(err => {
+        console.error('Failed to copy: ', err);
+        if (typeof showToast === 'function') {
+          showToast('Failed to copy link', 'error');
+        }
+      });
+    }
+
+    renderTables();
+    setInterval(updateTimeouts, 1000); // Update every second
+  </script>
+</body>
+</html>

@@ -29,9 +29,41 @@
       max-width: 560px;
     }
 
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(140px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .summary-card {
+      padding: 16px;
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .summary-card .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+      margin-bottom: 8px;
+    }
+
+    .summary-card .value {
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1;
+    }
+
     .filters-section {
       display: grid;
-      grid-template-columns: repeat(3, minmax(200px, 1fr));
+      grid-template-columns: repeat(4, minmax(180px, 1fr));
       gap: 14px;
       margin-bottom: 24px;
     }
@@ -47,6 +79,23 @@
       letter-spacing: 0.5px;
       text-transform: uppercase;
       color: var(--grey-4);
+    }
+
+    .reset-btn {
+      background: var(--grey-6);
+      color: var(--black);
+      border: var(--border);
+      padding: 9px 14px;
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all var(--transition);
+      align-self: end;
+    }
+
+    .reset-btn:hover {
+      background: var(--grey-5);
     }
 
     .attendance-panel {
@@ -112,9 +161,15 @@
 
     .status-present { color: var(--green); background: rgba(45, 206, 106, 0.12); border-color: rgba(45, 206, 106, 0.25); }
     .status-absent { color: var(--accent); background: rgba(230, 48, 34, 0.12); border-color: rgba(230, 48, 34, 0.25); }
+    .status-signed-out { color: var(--yellow); background: rgba(245, 197, 24, 0.15); border-color: rgba(245, 197, 24, 0.35); }
 
     @media (max-width: 980px) {
       .filters-section { grid-template-columns: 1fr; }
+      .summary-grid { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: 1fr; }
       .page-hero { align-items: stretch; }
     }
   </style>
@@ -208,6 +263,25 @@
           </div>
         </section>
 
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="label">Total staff</span>
+            <span class="value" id="summaryTotal">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="label">Present</span>
+            <span class="value" id="summaryPresent">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="label">Signed out</span>
+            <span class="value" id="summarySignedOut">0</span>
+          </div>
+          <div class="summary-card">
+            <span class="label">Absent</span>
+            <span class="value" id="summaryAbsent">0</span>
+          </div>
+        </div>
+
         <div class="filters-section">
           <div class="filter-group">
             <label for="filterStaff">Staff member</label>
@@ -222,6 +296,7 @@
           <div class="filter-group">
             <!-- Empty for alignment -->
           </div>
+          <button class="reset-btn" id="resetFilters">Reset Filters</button>
         </div>
 
         <div class="attendance-panel card">
@@ -250,26 +325,37 @@
   <script src="admin.js"></script>
   <script>
     const attendanceLogs = [
-      { id: 1, name: 'Amina Hassan', checkIn: '08:30', checkOut: '18:00', date: '2026-04-30', status: 'present' },
-      { id: 2, name: 'Chinedu Okoro', checkIn: '09:00', checkOut: '17:30', date: '2026-04-30', status: 'present' },
-      { id: 3, name: 'Fatima Bello', checkIn: null, checkOut: null, date: '2026-04-30', status: 'absent' },
-      { id: 4, name: 'Emeka Nwosu', checkIn: '08:45', checkOut: '18:15', date: '2026-04-30', status: 'present' },
-      { id: 5, name: 'Ngozi Umeh', checkIn: '09:15', checkOut: null, date: '2026-04-30', status: 'absent' },
-      { id: 6, name: 'Amina Hassan', checkIn: '08:25', checkOut: '17:45', date: '2026-04-29', status: 'present' },
-      { id: 7, name: 'Chinedu Okoro', checkIn: '08:50', checkOut: '18:00', date: '2026-04-29', status: 'present' },
-      { id: 8, name: 'Fatima Bello', checkIn: '09:10', checkOut: '17:50', date: '2026-04-29', status: 'present' },
-      { id: 9, name: 'Emeka Nwosu', checkIn: null, checkOut: null, date: '2026-04-29', status: 'absent' },
-      { id: 10, name: 'Ngozi Umeh', checkIn: '08:40', checkOut: '18:10', date: '2026-04-29', status: 'present' }
+      { id: 1, name: 'Amina Hassan', checkIn: '08:30', checkOut: '18:00', date: '2026-04-30' },
+      { id: 2, name: 'Chinedu Okoro', checkIn: '09:00', checkOut: '17:30', date: '2026-04-30' },
+      { id: 3, name: 'Fatima Bello', checkIn: null, checkOut: null, date: '2026-04-30' },
+      { id: 4, name: 'Emeka Nwosu', checkIn: '08:45', checkOut: '18:15', date: '2026-04-30' },
+      { id: 5, name: 'Ngozi Umeh', checkIn: '09:15', checkOut: null, date: '2026-04-30' },
+      { id: 6, name: 'Amina Hassan', checkIn: '08:25', checkOut: '17:45', date: '2026-04-29' },
+      { id: 7, name: 'Chinedu Okoro', checkIn: '08:50', checkOut: '18:00', date: '2026-04-29' },
+      { id: 8, name: 'Fatima Bello', checkIn: '09:10', checkOut: '17:50', date: '2026-04-29' },
+      { id: 9, name: 'Emeka Nwosu', checkIn: null, checkOut: null, date: '2026-04-29' },
+      { id: 10, name: 'Ngozi Umeh', checkIn: '08:40', checkOut: '18:10', date: '2026-04-29' }
     ];
 
     const attendanceBody = document.getElementById('attendanceBody');
     const filterStaff = document.getElementById('filterStaff');
     const filterDate = document.getElementById('filterDate');
+    const resetFilters = document.getElementById('resetFilters');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const summaryPresent = document.getElementById('summaryPresent');
+    const summarySignedOut = document.getElementById('summarySignedOut');
+    const summaryAbsent = document.getElementById('summaryAbsent');
+
+    function getStatus(log) {
+      if (!log.checkIn) return 'absent';
+      if (!log.checkOut) return 'present';
+      return 'signed-out';
+    }
 
     function createStatusBadge(status) {
       const span = document.createElement('span');
       span.className = `status-badge status-${status}`;
-      span.textContent = status === 'present' ? 'Present' : 'Absent';
+      span.textContent = status === 'signed-out' ? 'Signed Out' : status.charAt(0).toUpperCase() + status.slice(1);
       return span;
     }
 
@@ -286,6 +372,7 @@
     function renderAttendance(logs) {
       attendanceBody.innerHTML = '';
       logs.forEach(log => {
+        const status = getStatus(log);
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${log.name}</td>
@@ -296,9 +383,27 @@
         `;
 
         const statusCell = row.querySelector('td:nth-child(5)');
-        statusCell.appendChild(createStatusBadge(log.status));
+        statusCell.appendChild(createStatusBadge(status));
         attendanceBody.appendChild(row);
       });
+    }
+
+    function computeSummary() {
+      const today = '2026-04-30';
+      const todayLogs = attendanceLogs.filter(log => log.date === today);
+      const uniqueStaff = new Set(todayLogs.map(log => log.name));
+      summaryTotal.textContent = uniqueStaff.size;
+
+      let present = 0, signedOut = 0, absent = 0;
+      todayLogs.forEach(log => {
+        const status = getStatus(log);
+        if (status === 'present') present++;
+        else if (status === 'signed-out') signedOut++;
+        else if (status === 'absent') absent++;
+      });
+      summaryPresent.textContent = present;
+      summarySignedOut.textContent = signedOut;
+      summaryAbsent.textContent = absent;
     }
 
     function applyFilters() {
@@ -314,10 +419,18 @@
       renderAttendance(filtered);
     }
 
+    function resetFiltersFunc() {
+      filterStaff.value = 'all';
+      filterDate.value = '';
+      renderAttendance(attendanceLogs);
+    }
+
     filterStaff.addEventListener('change', applyFilters);
     filterDate.addEventListener('change', applyFilters);
+    resetFilters.addEventListener('click', resetFiltersFunc);
 
     populateStaffFilter();
+    computeSummary();
     renderAttendance(attendanceLogs);
   </script>
 </body>
