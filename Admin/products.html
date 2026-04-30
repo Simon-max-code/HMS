@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — HMS Admin</title>
+  <link rel="stylesheet" href="admin-layout.css">
+  <style>
+    /* ── Page-specific styles ── */
+
+    /* Toolbar */
+    .page-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar-search {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+      max-width: 340px;
+    }
+
+    .toolbar-search .input { padding-left: 38px; }
+
+    .toolbar-search-icon {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 15px;
+      pointer-events: none;
+      color: var(--grey-4);
+    }
+
+    .toolbar-filters {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+
+    .toolbar-filters select.input {
+      width: auto;
+      min-width: 140px;
+    }
+
+    .toolbar-right {
+      display: flex; gap: 10px; margin-left: auto;
+    }
+
+    /* View toggle */
+    .view-toggle {
+      display: flex;
+      border: 2px solid var(--black);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .view-btn {
+      padding: 8px 12px;
+      background: var(--white);
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      transition: all var(--transition);
+      border-right: 1px solid var(--black);
+      color: var(--grey-4);
+    }
+
+    .view-btn:last-child { border-right: none; }
+    .view-btn.active { background: var(--black); color: var(--white); }
+    .view-btn:hover:not(.active) { background: var(--grey-6); }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .stat-chip {
+      background: var(--white);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 18px;
+      display: flex; align-items: center; gap: 12px;
+    }
+
+    .stat-chip-icon {
+      font-size: 22px;
+      width: 40px; height: 40px;
+      background: var(--black);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stat-chip-num {
+      font-family: var(--font-display);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .stat-chip-lbl {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--grey-4);
+    }
+
+    /* ── Product Grid ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .product-admin-card {
+      background: var(--white);
+      border: var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition);
+      position: relative;
+    }
+
+    .product-admin-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .product-admin-card.out-of-stock {
+      opacity: 0.7;
+    }
+
+    .product-admin-card.out-of-stock .pac-img img {
+      filter: grayscale(80%);
+    }
+
+    .pac-img {
+      height: 150px;
+      overflow: hidden;
+      background: var(--grey-6);
+      position: relative;
+    }
+
+    .pac-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .product-admin-card:hover .pac-img img { transform: scale(1.04); }
+
+    .pac-category-badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+
+    .pac-stock-badge {
+      position: absolute;
+      top: 10px; right: 10px;
+    }
+
+    .pac-body { padding: 14px; }
+
+    .pac-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pac-price {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .pac-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid var(--grey-6);
+    }
+
+    .pac-toggle-row {
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .pac-toggle-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+    }
+
+    .pac-actions { display: flex; gap: 6px; }
+
+    /* ── Table View ── */
+    .products-table-wrap {
+      overflow-x: auto;
+      border: var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .products-table-wrap .data-table th:first-child,
+    .products-table-wrap .data-table td:first-child {
+      padding-left: 20px;
+    }
+
+    .tbl-product-thumb {
+      width: 44px; height: 44px;
+      object-fit: cover;
+      border-radius: 4px;
+      border: 1.5px solid var(--grey-6);
+      display: block;
+    }
+
+    .tbl-product-name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .tbl-product-id {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey-4);
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .empty-state-icon { font-size: 52px; margin-bottom: 12px; opacity: 0.35; }
+
+    .empty-state-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+    }
+
+    .empty-state-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+    }
+
+    /* ── Modal image preview ── */
+    .img-upload-preview {
+      width: 100%; height: 160px;
+      border: 2px dashed var(--grey-5);
+      border-radius: var(--radius);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: all var(--transition);
+      overflow: hidden;
+      position: relative;
+      background: var(--grey-6);
+    }
+
+    .img-upload-preview:hover { border-color: var(--black); background: #e8e7e1; }
+
+    .img-upload-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .img-upload-preview.has-image img { display: block; }
+    .img-upload-preview.has-image .upload-hint { display: none; }
+
+    .upload-hint {
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .upload-hint-icon { font-size: 28px; margin-bottom: 6px; color: var(--grey-4); }
+
+    .upload-hint-text {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--grey-4);
+    }
+
+    /* Confirm delete modal */
+    .delete-modal { max-width: 380px; }
+
+    .delete-modal .modal-body {
+      text-align: center;
+      padding: 30px 24px;
+    }
+
+    .delete-icon { font-size: 42px; margin-bottom: 12px; }
+
+    .delete-question {
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .delete-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 20px;
+      flex-wrap: wrap; gap: 12px;
+    }
+
+    .pagination-info {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+    }
+
+    .pagination-btns { display: flex; gap: 6px; }
+
+    .page-btn {
+      width: 32px; height: 32px;
+      background: var(--white);
+      border: 2px solid var(--black);
+      border-radius: var(--radius);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all var(--transition);
+    }
+
+    .page-btn:hover, .page-btn.active {
+      background: var(--black); color: var(--white);
+    }
+
+    .page-btn:disabled {
+      opacity: 0.3; cursor: not-allowed;
+    }
+
+    /* Hidden file input */
+    #imgFileInput { display: none; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .stats-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .stats-strip { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .toolbar-right { width: 100%; justify-content: flex-end; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+
+    @media (max-width: 420px) {
+      .products-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- ════════════════ SIDEBAR ════════════════ -->
+  <aside class="sidebar" id="adminSidebar">
+    <div class="sidebar-logo">
+      <div class="logo-mark">H</div>
+      <div>
+        <div class="logo-text">HMS</div>
+        <div class="logo-sub">Bar &amp; Lounge</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <a class="nav-link" href="dashboard.html" data-page="dashboard.html">
+        <span class="nav-icon">▦</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a class="nav-link active" href="products.html" data-page="products.html">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Products</span>
+      </a>
+      <a class="nav-link" href="orders.html" data-page="orders.html">
+        <span class="nav-icon">≡</span>
+        <span class="nav-label">Orders</span>
+      </a>
+      <a class="nav-link" href="transactions.html" data-page="transactions.html">
+        <span class="nav-icon">₦</span>
+        <span class="nav-label">Transactions</span>
+      </a>
+
+      <div class="nav-section-label">People</div>
+      <a class="nav-link" href="staff.html" data-page="staff.html">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Staff</span>
+      </a>
+      <a class="nav-link" href="attendance.html" data-page="attendance.html">
+        <span class="nav-icon">✓</span>
+        <span class="nav-label">Attendance</span>
+      </a>
+
+      <div class="nav-section-label">Venue</div>
+      <a class="nav-link" href="tables.html" data-page="tables.html">
+        <span class="nav-icon">⊞</span>
+        <span class="nav-label">Tables / QR Codes</span>
+      </a>
+      <a class="nav-link" href="reviews.html" data-page="reviews.html">
+        <span class="nav-icon">★</span>
+        <span class="nav-label">Reviews</span>
+      </a>
+
+      <div class="nav-section-label">Account</div>
+      <a class="nav-link" href="profile.html" data-page="profile.html">
+        <span class="nav-icon">○</span>
+        <span class="nav-label">Profile</span>
+      </a>
+      <a class="nav-link" href="settings.html" data-page="settings.html">
+        <span class="nav-icon">⚙</span>
+        <span class="nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-toggle" id="sidebarToggleBtn">
+        <span class="toggle-icon">◁</span>
+        <span class="toggle-text">Collapse</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ════════════════ MAIN ════════════════ -->
+  <div class="main-area">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="topbar-mobile-toggle" id="mobileMenuBtn">☰</button>
+      <div class="topbar-title">PRODUCTS</div>
+      <div class="topbar-actions">
+        <span class="topbar-date" id="topbarDate"></span>
+        <div class="topbar-avatar" title="Admin">AD</div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="page-content">
+
+      <!-- Stats strip -->
+      <div class="stats-strip">
+        <div class="stat-chip">
+          <div class="stat-chip-icon">◈</div>
+          <div>
+            <div class="stat-chip-num" id="statTotal">0</div>
+            <div class="stat-chip-lbl">Total Products</div>
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-icon" style="background:var(--green)">✓</div>
+          <div>
+            <div class="stat-chip-num" id="statInStock">0</div>
+            <div class="stat-chip-lbl">In Stock</div>
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-icon" style="background:var(--accent)">✕</div>
+          <div>
+            <div class="stat-chip-num" id="statOutStock">0</div>
+            <div class="stat-chip-lbl">Out of Stock</div>
+          </div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-icon" style="background:var(--yellow); color:var(--black)">▤</div>
+          <div>
+            <div class="stat-chip-num" id="statCategories">0</div>
+            <div class="stat-chip-lbl">Categories</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="page-toolbar">
+        <div class="toolbar-search">
+          <span class="toolbar-search-icon">⌕</span>
+          <input type="text" class="input" id="searchInput" placeholder="Search products…">
+        </div>
+
+        <div class="toolbar-filters">
+          <select class="input" id="filterCategory">
+            <option value="">All Categories</option>
+          </select>
+          <select class="input" id="filterStock">
+            <option value="">All Stock</option>
+            <option value="in">In Stock</option>
+            <option value="out">Out of Stock</option>
+          </select>
+        </div>
+
+        <div class="toolbar-right">
+          <div class="view-toggle">
+            <button class="view-btn active" id="viewGrid" title="Grid view">⊞</button>
+            <button class="view-btn" id="viewTable" title="Table view">☰</button>
+          </div>
+          <button class="btn btn-primary" onclick="openAddModal()">+ Add Product</button>
+        </div>
+      </div>
+
+      <!-- Grid View -->
+      <div id="gridView">
+        <div class="products-grid" id="productsGrid"></div>
+        <div class="empty-state" id="emptyState" style="display:none">
+          <div class="empty-state-icon">◈</div>
+          <div class="empty-state-title">NO PRODUCTS FOUND</div>
+          <div class="empty-state-sub">Try adjusting your search or filters</div>
+        </div>
+      </div>
+
+      <!-- Table View -->
+      <div id="tableView" style="display:none">
+        <div class="products-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock Status</th>
+                <th>Toggle</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <span class="pagination-info" id="paginationInfo"></span>
+        <div class="pagination-btns" id="paginationBtns"></div>
+      </div>
+
+    </main>
+  </div><!-- /main-area -->
+</div><!-- /admin-shell -->
+
+
+<!-- ════════════ ADD / EDIT MODAL ════════════ -->
+<div class="modal-backdrop" id="productModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">ADD PRODUCT</div>
+      <button class="modal-close" onclick="AdminUI.closeModal('productModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editProductId">
+
+      <!-- Image Upload -->
+      <div class="form-group">
+        <label class="form-label">Product Image</label>
+        <div class="img-upload-preview" id="imgPreview" onclick="document.getElementById('imgFileInput').click()">
+          <img id="previewImg" src="" alt="">
+          <div class="upload-hint">
+            <div class="upload-hint-icon">⬆</div>
+            <div class="upload-hint-text">Click to upload image<br><span style="font-size:9px;opacity:0.6">or paste an image URL below</span></div>
+          </div>
+        </div>
+        <input type="file" id="imgFileInput" accept="image/*">
+        <input type="text" class="input" id="imgUrlInput" placeholder="…or paste image URL"
+          style="margin-top:8px" oninput="previewFromUrl(this.value)">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="productName">Product Name *</label>
+          <input type="text" class="input" id="productName" placeholder="e.g. Jollof Rice">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="productPrice">Price (₦) *</label>
+          <input type="number" class="input" id="productPrice" placeholder="0.00" min="0" step="0.01">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="productCategory">Category *</label>
+          <select class="input" id="productCategory">
+            <option value="">Select category…</option>
+            <option>Main Courses</option>
+            <option>Soups</option>
+            <option>Local Delicacies</option>
+            <option>Salads</option>
+            <option>Cocktails</option>
+            <option>Coffee &amp; Tea</option>
+            <option>Soft Drinks</option>
+            <option>Beer &amp; Alcohol</option>
+            <option>Fresh Juices</option>
+            <option>Platters</option>
+            <option>Fishes</option>
+            <option>Meats</option>
+            <option>Tapas &amp; Appetizers</option>
+            <option>Fries &amp; Potatoes</option>
+            <option>Wraps</option>
+            <option>Rice Dishes</option>
+            <option>Bread</option>
+            <option>Pepper Soup</option>
+            <option>Vegetables</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock Status</label>
+          <label class="toggle" style="margin-top:10px">
+            <input type="checkbox" id="productInStock" checked>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <span id="stockLabel" style="font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--grey-4);margin-left:8px;vertical-align:middle">In Stock</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="AdminUI.closeModal('productModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ════════════ DELETE CONFIRM MODAL ════════════ -->
+<div class="modal-backdrop" id="deleteModal">
+  <div class="modal delete-modal">
+    <div class="modal-body">
+      <div class="delete-icon">🗑</div>
+      <div class="delete-question">DELETE PRODUCT?</div>
+      <div class="delete-sub" id="deleteProductName">This action cannot be undone.</div>
+    </div>
+    <div class="modal-footer" style="justify-content:center; gap:14px">
+      <button class="btn" onclick="AdminUI.closeModal('deleteModal')">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+
+<script src="admin-layout.js"></script>
+<script>
+  // ════════════════════════════════════════════
+  //  products.js  — Products management logic
+  //  connect to backend later
+  // ════════════════════════════════════════════
+
+  'use strict';
+
+  /* ── Mock Data ── */
+  // connect to backend later: replace with GET /api/products
+  let products = [
+    { id: 1, name: 'Pasta Carbonara',    price: 1299, category: 'Main Courses',     inStock: true,  img: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400' },
+    { id: 2, name: 'Margherita Pizza',   price: 577,  category: 'Main Courses',     inStock: true,  img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400' },
+    { id: 3, name: 'Tomato Soup',        price: 989,  category: 'Soups',            inStock: true,  img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400' },
+    { id: 4, name: 'Brown Soup',         price: 909,  category: 'Soups',            inStock: false, img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400' },
+    { id: 5, name: 'Nkwobi',             price: 200,  category: 'Local Delicacies', inStock: true,  img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400' },
+    { id: 6, name: 'Goat Meat',          price: 199,  category: 'Local Delicacies', inStock: true,  img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400' },
+    { id: 7, name: 'Caesar Salad',       price: 100,  category: 'Salads',           inStock: true,  img: 'https://images.unsplash.com/photo-1529042410759-befb1204b468?w=400' },
+    { id: 8, name: 'Mojito',             price: 900,  category: 'Cocktails',        inStock: true,  img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400' },
+    { id: 9, name: 'Lemonade',           price: 700,  category: 'Cocktails',        inStock: false, img: 'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=400' },
+    { id:10, name: 'Espresso',           price: 399,  category: 'Coffee & Tea',     inStock: true,  img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400' },
+    { id:11, name: 'Fanta',              price: 19,   category: 'Soft Drinks',      inStock: true,  img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=400' },
+    { id:12, name: 'Craft Beer',         price: 700,  category: 'Beer & Alcohol',   inStock: true,  img: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=400' },
+    { id:13, name: 'Cheese Platter',     price: 1899, category: 'Platters',         inStock: true,  img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400' },
+    { id:14, name: 'Grilled Fish',       price: 2299, category: 'Fishes',           inStock: true,  img: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?w=400' },
+    { id:15, name: 'French Fries',       price: 499,  category: 'Fries & Potatoes', inStock: true,  img: 'https://images.unsplash.com/photo-1573053986275-840ffc7cc685?w=400' },
+    { id:16, name: 'Jollof Rice',        price: 389,  category: 'Rice Dishes',      inStock: true,  img: 'https://images.unsplash.com/photo-1534939561126-855b8675edd7?w=400' },
+    { id:17, name: 'Garlic Bread',       price: 59,   category: 'Bread',            inStock: true,  img: 'https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400' },
+    { id:18, name: 'Pepper Soup',        price: 1599, category: 'Pepper Soup',      inStock: false, img: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400' },
+    { id:19, name: 'Grilled Veggies',    price: 699,  category: 'Vegetables',       inStock: true,  img: 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400' },
+    { id:20, name: 'Fresh Juice',        price: 599,  category: 'Fresh Juices',     inStock: true,  img: 'https://images.unsplash.com/photo-1597318167272-600e9a20b637?w=400' },
+  ];
+
+  let nextId = 21;
+  let deleteTargetId = null;
+
+  /* ── State ── */
+  let currentView   = 'grid';
+  let currentSearch = '';
+  let currentCat    = '';
+  let currentStock  = '';
+  let currentPage   = 1;
+  const PER_PAGE    = 12;
+
+  /* ── Computed / Helpers ── */
+  function filtered() {
+    return products.filter(p => {
+      const matchQ   = p.name.toLowerCase().includes(currentSearch.toLowerCase());
+      const matchCat = !currentCat  || p.category === currentCat;
+      const matchSt  = !currentStock
+        || (currentStock === 'in'  &&  p.inStock)
+        || (currentStock === 'out' && !p.inStock);
+      return matchQ && matchCat && matchSt;
+    });
+  }
+
+  function fmt(n) { return '₦' + n.toLocaleString('en-NG', { minimumFractionDigits: 2 }); }
+
+  /* ── Stats ── */
+  function updateStats() {
+    document.getElementById('statTotal').textContent     = products.length;
+    document.getElementById('statInStock').textContent   = products.filter(p => p.inStock).length;
+    document.getElementById('statOutStock').textContent  = products.filter(p => !p.inStock).length;
+    const cats = new Set(products.map(p => p.category));
+    document.getElementById('statCategories').textContent = cats.size;
+  }
+
+  /* ── Category filter populate ── */
+  function populateCategoryFilter() {
+    const sel = document.getElementById('filterCategory');
+    const cats = [...new Set(products.map(p => p.category))].sort();
+    sel.innerHTML = '<option value="">All Categories</option>';
+    cats.forEach(c => {
+      const o = document.createElement('option');
+      o.value = c; o.textContent = c;
+      if (c === currentCat) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+
+  /* ── Render Grid ── */
+  function renderGrid(items) {
+    const grid = document.getElementById('productsGrid');
+    const empty = document.getElementById('emptyState');
+
+    if (!items.length) {
+      grid.innerHTML = '';
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+
+    grid.innerHTML = items.map(p => `
+      <div class="product-admin-card ${p.inStock ? '' : 'out-of-stock'}" data-id="${p.id}">
+        <div class="pac-img">
+          <img src="${p.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'}" alt="${p.name}" loading="lazy"
+            onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'">
+          <span class="pac-category-badge">${p.category}</span>
+          <span class="pac-stock-badge">
+            <span class="badge ${p.inStock ? 'badge-green' : 'badge-red'}">${p.inStock ? 'In Stock' : 'Out of Stock'}</span>
+          </span>
+        </div>
+        <div class="pac-body">
+          <div class="pac-name" title="${p.name}">${p.name}</div>
+          <div class="pac-price">${fmt(p.price)}</div>
+          <div class="pac-footer">
+            <div class="pac-toggle-row">
+              <label class="toggle" title="${p.inStock ? 'Mark out of stock' : 'Mark in stock'}">
+                <input type="checkbox" ${p.inStock ? 'checked' : ''} onchange="toggleStock(${p.id}, this.checked)">
+                <div class="toggle-track"></div>
+                <div class="toggle-thumb"></div>
+              </label>
+              <span class="pac-toggle-label">${p.inStock ? 'Available' : 'Unavailable'}</span>
+            </div>
+            <div class="pac-actions">
+              <button class="btn btn-sm" onclick="openEditModal(${p.id})" title="Edit">✎</button>
+              <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${p.id})" title="Delete">✕</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ── Render Table ── */
+  function renderTable(items) {
+    const tbody = document.getElementById('productsTableBody');
+
+    if (!items.length) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--grey-4);font-family:var(--font-mono);font-size:11px">No products match your filters</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = items.map(p => `
+      <tr>
+        <td>
+          <div style="display:flex;align-items:center;gap:12px">
+            <img class="tbl-product-thumb" src="${p.img}" alt="${p.name}"
+              onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400'">
+            <div>
+              <div class="tbl-product-name">${p.name}</div>
+              <div class="tbl-product-id">#${String(p.id).padStart(4,'0')}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="badge badge-grey">${p.category}</span></td>
+        <td style="font-family:var(--font-display);font-size:16px;letter-spacing:1px">${fmt(p.price)}</td>
+        <td><span class="badge ${p.inStock ? 'badge-green' : 'badge-red'}">${p.inStock ? 'In Stock' : 'Out of Stock'}</span></td>
+        <td>
+          <label class="toggle">
+            <input type="checkbox" ${p.inStock ? 'checked' : ''} onchange="toggleStock(${p.id}, this.checked)">
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+        </td>
+        <td>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-sm" onclick="openEditModal(${p.id})">✎ Edit</button>
+            <button class="btn btn-sm btn-danger" onclick="openDeleteModal(${p.id})">✕ Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  /* ── Pagination ── */
+  function paginate(items) {
+    const total = items.length;
+    const totalPages = Math.ceil(total / PER_PAGE) || 1;
+    currentPage = Math.min(currentPage, totalPages);
+
+    const start = (currentPage - 1) * PER_PAGE;
+    const sliced = items.slice(start, start + PER_PAGE);
+
+    const info = document.getElementById('paginationInfo');
+    info.textContent = `Showing ${start + 1}–${Math.min(start + PER_PAGE, total)} of ${total} products`;
+
+    const btns = document.getElementById('paginationBtns');
+    btns.innerHTML = '';
+
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'page-btn';
+    prevBtn.textContent = '‹';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => { currentPage--; render(); };
+    btns.appendChild(prevBtn);
+
+    for (let i = 1; i <= totalPages; i++) {
+      const b = document.createElement('button');
+      b.className = 'page-btn' + (i === currentPage ? ' active' : '');
+      b.textContent = i;
+      b.onclick = (page => () => { currentPage = page; render(); })(i);
+      btns.appendChild(b);
+    }
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'page-btn';
+    nextBtn.textContent = '›';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => { currentPage++; render(); };
+    btns.appendChild(nextBtn);
+
+    return sliced;
+  }
+
+  /* ── Master Render ── */
+  function render() {
+    const items = filtered();
+    const paged = paginate(items);
+
+    if (currentView === 'grid') {
+      document.getElementById('gridView').style.display  = '';
+      document.getElementById('tableView').style.display = 'none';
+      renderGrid(paged);
+    } else {
+      document.getElementById('gridView').style.display  = 'none';
+      document.getElementById('tableView').style.display = '';
+      renderTable(paged);
+    }
+
+    updateStats();
+    populateCategoryFilter();
+  }
+
+  /* ── Toggle Stock ── */
+  function toggleStock(id, value) {
+    // connect to backend later: PATCH /api/products/:id  { inStock: value }
+    const p = products.find(x => x.id === id);
+    if (p) {
+      p.inStock = value;
+      AdminUI.toast(`"${p.name}" marked ${value ? 'In Stock' : 'Out of Stock'}`);
+      render();
+    }
+  }
+
+  /* ── Add Modal ── */
+  function openAddModal() {
+    document.getElementById('modalTitle').textContent = 'ADD PRODUCT';
+    document.getElementById('editProductId').value = '';
+    document.getElementById('productName').value     = '';
+    document.getElementById('productPrice').value    = '';
+    document.getElementById('productCategory').value = '';
+    document.getElementById('productInStock').checked = true;
+    document.getElementById('stockLabel').textContent = 'In Stock';
+    document.getElementById('imgUrlInput').value     = '';
+    document.getElementById('previewImg').src        = '';
+    document.getElementById('imgPreview').classList.remove('has-image');
+    AdminUI.openModal('productModal');
+  }
+
+  /* ── Edit Modal ── */
+  function openEditModal(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+
+    document.getElementById('modalTitle').textContent = 'EDIT PRODUCT';
+    document.getElementById('editProductId').value    = id;
+    document.getElementById('productName').value      = p.name;
+    document.getElementById('productPrice').value     = p.price;
+    document.getElementById('productCategory').value  = p.category;
+    document.getElementById('productInStock').checked = p.inStock;
+    document.getElementById('stockLabel').textContent = p.inStock ? 'In Stock' : 'Out of Stock';
+    document.getElementById('imgUrlInput').value      = p.img || '';
+    previewFromUrl(p.img || '');
+    AdminUI.openModal('productModal');
+  }
+
+  /* ── Save Product (Add / Edit) ── */
+  function saveProduct() {
+    const id    = document.getElementById('editProductId').value;
+    const name  = document.getElementById('productName').value.trim();
+    const price = parseFloat(document.getElementById('productPrice').value);
+    const cat   = document.getElementById('productCategory').value;
+    const inSt  = document.getElementById('productInStock').checked;
+    const img   = document.getElementById('imgUrlInput').value.trim()
+      || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400';
+
+    if (!name || isNaN(price) || !cat) {
+      AdminUI.toast('Please fill in all required fields.', 'error');
+      return;
+    }
+
+    if (id) {
+      // Edit existing
+      const p = products.find(x => x.id == id);
+      if (p) { p.name = name; p.price = price; p.category = cat; p.inStock = inSt; p.img = img; }
+      AdminUI.toast(`"${name}" updated successfully.`);
+      // connect to backend later: PUT /api/products/:id
+    } else {
+      // Add new
+      products.push({ id: nextId++, name, price, category: cat, inStock: inSt, img });
+      AdminUI.toast(`"${name}" added successfully.`);
+      // connect to backend later: POST /api/products
+    }
+
+    AdminUI.closeModal('productModal');
+    currentPage = 1;
+    render();
+  }
+
+  /* ── Delete Modal ── */
+  function openDeleteModal(id) {
+    deleteTargetId = id;
+    const p = products.find(x => x.id === id);
+    document.getElementById('deleteProductName').textContent =
+      p ? `"${p.name}" will be permanently removed.` : 'This action cannot be undone.';
+    AdminUI.openModal('deleteModal');
+  }
+
+  function confirmDelete() {
+    if (deleteTargetId == null) return;
+    const p = products.find(x => x.id === deleteTargetId);
+    products = products.filter(x => x.id !== deleteTargetId);
+    // connect to backend later: DELETE /api/products/:id
+    AdminUI.toast(`"${p?.name}" deleted.`, 'error');
+    deleteTargetId = null;
+    AdminUI.closeModal('deleteModal');
+    render();
+  }
+
+  /* ── Image Preview ── */
+  function previewFromUrl(url) {
+    const preview = document.getElementById('imgPreview');
+    const img     = document.getElementById('previewImg');
+    if (url) {
+      img.src = url;
+      img.onload  = () => preview.classList.add('has-image');
+      img.onerror = () => preview.classList.remove('has-image');
+    } else {
+      preview.classList.remove('has-image');
+    }
+  }
+
+  // File upload preview
+  document.getElementById('imgFileInput').addEventListener('change', function() {
+    const file = this.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('imgUrlInput').value = e.target.result;
+      previewFromUrl(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Stock toggle label update
+  document.getElementById('productInStock').addEventListener('change', function() {
+    document.getElementById('stockLabel').textContent = this.checked ? 'In Stock' : 'Out of Stock';
+  });
+
+  /* ── Search & Filters ── */
+  document.getElementById('searchInput').addEventListener('input', function() {
+    currentSearch = this.value;
+    currentPage = 1;
+    render();
+  });
+
+  document.getElementById('filterCategory').addEventListener('change', function() {
+    currentCat = this.value;
+    currentPage = 1;
+    render();
+  });
+
+  document.getElementById('filterStock').addEventListener('change', function() {
+    currentStock = this.value;
+    currentPage = 1;
+    render();
+  });
+
+  /* ── View Toggle ── */
+  document.getElementById('viewGrid').addEventListener('click', function() {
+    currentView = 'grid';
+    this.classList.add('active');
+    document.getElementById('viewTable').classList.remove('active');
+    render();
+  });
+
+  document.getElementById('viewTable').addEventListener('click', function() {
+    currentView = 'table';
+    this.classList.add('active');
+    document.getElementById('viewGrid').classList.remove('active');
+    render();
+  });
+
+  /* ── Init ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    populateCategoryFilter();
+    render();
+  });
+</script>
+</body>
+</html>
