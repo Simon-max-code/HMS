@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HMS Admin — Attendance</title>
+  <link rel="stylesheet" href="admin-layout.css" />
+  <style>
+    .page-hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
+
+    .page-hero p {
+      margin: 6px 0 0;
+      color: var(--grey-4);
+      font-size: 13px;
+      max-width: 560px;
+    }
+
+    .filters-section {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(200px, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .filters-section .filter-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .filters-section label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+    }
+
+    .attendance-panel {
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .attendance-panel-header {
+      padding: 18px 20px;
+      border-bottom: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .attendance-panel-header h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      min-width: 720px;
+    }
+
+    .data-table td:nth-child(1) {
+      font-family: var(--font-display);
+      font-size: 13px;
+    }
+
+    .data-table td:nth-child(2),
+    .data-table td:nth-child(3) {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--grey-4);
+    }
+
+    .data-table td:nth-child(4) {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--grey-4);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      min-width: 90px;
+    }
+
+    .status-present { color: var(--green); background: rgba(45, 206, 106, 0.12); border-color: rgba(45, 206, 106, 0.25); }
+    .status-absent { color: var(--accent); background: rgba(230, 48, 34, 0.12); border-color: rgba(230, 48, 34, 0.25); }
+
+    @media (max-width: 980px) {
+      .filters-section { grid-template-columns: 1fr; }
+      .page-hero { align-items: stretch; }
+    }
+  </style>
+</head>
+<body data-page="attendance">
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">H</div>
+        <div>
+          <div class="logo-text">HMS</div>
+          <div class="logo-sub">Bar &amp; Lounge</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-link" href="dashboard.html" data-page="dashboard">
+          <span class="nav-icon">▦</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-link" href="products.html" data-page="products">
+          <span class="nav-icon">◈</span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a class="nav-link" href="orders.html" data-page="orders">
+          <span class="nav-icon">≡</span>
+          <span class="nav-label">Orders</span>
+        </a>
+        <a class="nav-link" href="transactions.html" data-page="transactions">
+          <span class="nav-icon">₦</span>
+          <span class="nav-label">Transactions</span>
+        </a>
+
+        <div class="nav-section-label">People</div>
+        <a class="nav-link" href="staff.html" data-page="staff">
+          <span class="nav-icon">◎</span>
+          <span class="nav-label">Staff</span>
+        </a>
+        <a class="nav-link active" href="attendance.html" data-page="attendance">
+          <span class="nav-icon">✓</span>
+          <span class="nav-label">Attendance</span>
+        </a>
+
+        <div class="nav-section-label">Venue</div>
+        <a class="nav-link" href="tables.html" data-page="tables">
+          <span class="nav-icon">⊞</span>
+          <span class="nav-label">Tables / QR Codes</span>
+        </a>
+        <a class="nav-link" href="reviews.html" data-page="reviews">
+          <span class="nav-icon">★</span>
+          <span class="nav-label">Reviews</span>
+        </a>
+
+        <div class="nav-section-label">Account</div>
+        <a class="nav-link" href="profile.html" data-page="profile">
+          <span class="nav-icon">○</span>
+          <span class="nav-label">Profile</span>
+        </a>
+        <a class="nav-link" href="settings.html" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-toggle" id="sidebarToggleBtn">
+          <span class="toggle-icon">◁</span>
+          <span class="toggle-text">Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="topbar-mobile-toggle" id="menuToggle">☰</button>
+        <div class="topbar-title">Attendance</div>
+        <div class="topbar-actions">
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="topbar-avatar" title="Admin">AD</div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="page-hero">
+          <div>
+            <h1>Biometric Logs</h1>
+            <p>Monitor staff attendance with check-in and check-out times. Filter by staff member and date to review logs.</p>
+          </div>
+        </section>
+
+        <div class="filters-section">
+          <div class="filter-group">
+            <label for="filterStaff">Staff member</label>
+            <select class="input" id="filterStaff">
+              <option value="all">All staff</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="filterDate">Date</label>
+            <input class="input" id="filterDate" type="date" />
+          </div>
+          <div class="filter-group">
+            <!-- Empty for alignment -->
+          </div>
+        </div>
+
+        <div class="attendance-panel card">
+          <div class="attendance-panel-header">
+            <h2>Attendance logs</h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Staff name</th>
+                  <th>Check-in time</th>
+                  <th>Check-out time</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    const attendanceLogs = [
+      { id: 1, name: 'Amina Hassan', checkIn: '08:30', checkOut: '18:00', date: '2026-04-30', status: 'present' },
+      { id: 2, name: 'Chinedu Okoro', checkIn: '09:00', checkOut: '17:30', date: '2026-04-30', status: 'present' },
+      { id: 3, name: 'Fatima Bello', checkIn: null, checkOut: null, date: '2026-04-30', status: 'absent' },
+      { id: 4, name: 'Emeka Nwosu', checkIn: '08:45', checkOut: '18:15', date: '2026-04-30', status: 'present' },
+      { id: 5, name: 'Ngozi Umeh', checkIn: '09:15', checkOut: null, date: '2026-04-30', status: 'absent' },
+      { id: 6, name: 'Amina Hassan', checkIn: '08:25', checkOut: '17:45', date: '2026-04-29', status: 'present' },
+      { id: 7, name: 'Chinedu Okoro', checkIn: '08:50', checkOut: '18:00', date: '2026-04-29', status: 'present' },
+      { id: 8, name: 'Fatima Bello', checkIn: '09:10', checkOut: '17:50', date: '2026-04-29', status: 'present' },
+      { id: 9, name: 'Emeka Nwosu', checkIn: null, checkOut: null, date: '2026-04-29', status: 'absent' },
+      { id: 10, name: 'Ngozi Umeh', checkIn: '08:40', checkOut: '18:10', date: '2026-04-29', status: 'present' }
+    ];
+
+    const attendanceBody = document.getElementById('attendanceBody');
+    const filterStaff = document.getElementById('filterStaff');
+    const filterDate = document.getElementById('filterDate');
+
+    function createStatusBadge(status) {
+      const span = document.createElement('span');
+      span.className = `status-badge status-${status}`;
+      span.textContent = status === 'present' ? 'Present' : 'Absent';
+      return span;
+    }
+
+    function populateStaffFilter() {
+      const staffNames = [...new Set(attendanceLogs.map(log => log.name))];
+      staffNames.forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        filterStaff.appendChild(option);
+      });
+    }
+
+    function renderAttendance(logs) {
+      attendanceBody.innerHTML = '';
+      logs.forEach(log => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${log.name}</td>
+          <td>${log.checkIn || '—'}</td>
+          <td>${log.checkOut || '—'}</td>
+          <td>${new Date(log.date).toLocaleDateString('en-NG', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+          <td></td>
+        `;
+
+        const statusCell = row.querySelector('td:nth-child(5)');
+        statusCell.appendChild(createStatusBadge(log.status));
+        attendanceBody.appendChild(row);
+      });
+    }
+
+    function applyFilters() {
+      const selectedStaff = filterStaff.value;
+      const selectedDate = filterDate.value;
+
+      const filtered = attendanceLogs.filter(log => {
+        if (selectedStaff !== 'all' && log.name !== selectedStaff) return false;
+        if (selectedDate && log.date !== selectedDate) return false;
+        return true;
+      });
+
+      renderAttendance(filtered);
+    }
+
+    filterStaff.addEventListener('change', applyFilters);
+    filterDate.addEventListener('change', applyFilters);
+
+    populateStaffFilter();
+    renderAttendance(attendanceLogs);
+  </script>
+</body>
+</html>
