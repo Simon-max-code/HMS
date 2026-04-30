@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HMS Admin — Staff Management</title>
+  <link rel="stylesheet" href="admin-layout.css" />
+  <style>
+    .page-hero {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 34px;
+      letter-spacing: 2px;
+    }
+
+    .page-hero p {
+      margin: 6px 0 0;
+      color: var(--grey-4);
+      font-size: 13px;
+      max-width: 560px;
+    }
+
+    .page-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .page-actions .status-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(130px, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
+
+    .status-summary .summary-card {
+      padding: 16px;
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .status-summary .summary-card .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+      margin-bottom: 8px;
+    }
+
+    .status-summary .summary-card .value {
+      font-family: var(--font-display);
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .staff-panel {
+      border: var(--border);
+      border-radius: var(--radius);
+      background: var(--white);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .staff-panel-header {
+      padding: 18px 20px;
+      border-bottom: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .staff-panel-header h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      min-width: 720px;
+    }
+
+    .data-table td:nth-child(1) {
+      font-family: var(--font-display);
+      font-size: 13px;
+    }
+
+    .data-table td:nth-child(2) {
+      font-family: var(--font-mono);
+      color: var(--grey-4);
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      min-width: 90px;
+    }
+
+    .status-active { color: var(--green); background: rgba(45, 206, 106, 0.12); border-color: rgba(45, 206, 106, 0.25); }
+    .status-disabled { color: var(--accent); background: rgba(230, 48, 34, 0.12); border-color: rgba(230, 48, 34, 0.25); }
+
+    .action-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action-group .input {
+      max-width: 160px;
+    }
+
+    .btn-disable { background: var(--accent); color: var(--white); border-color: var(--accent); }
+    .btn-enable { background: var(--green); color: var(--white); border-color: var(--green); }
+
+    /* Modal styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border: var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 24px;
+      max-width: 400px;
+      width: 90%;
+      transform: scale(0.9);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.open .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      margin-bottom: 16px;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 20px;
+      letter-spacing: 2px;
+    }
+
+    .modal-body {
+      margin-bottom: 20px;
+    }
+
+    .modal-body .input-group {
+      margin-bottom: 12px;
+    }
+
+    .modal-body label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: var(--grey-4);
+      margin-bottom: 4px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* Confirmation toast */
+    .confirm-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      background: var(--black);
+      color: var(--white);
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      box-shadow: 4px 4px 0 var(--accent);
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateY(10px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+      max-width: 350px;
+    }
+
+    .confirm-toast.open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .confirm-toast .message {
+      flex: 1;
+    }
+
+    .confirm-toast .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .confirm-toast .btn-confirm {
+      background: var(--accent);
+      color: var(--white);
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .confirm-toast .btn-cancel {
+      background: transparent;
+      color: var(--grey-5);
+      border: 1px solid var(--grey-5);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 11px;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    @media (max-width: 980px) {
+      .page-actions { flex-direction: column; align-items: stretch; }
+      .status-summary { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .status-summary { grid-template-columns: 1fr; }
+      .page-hero { align-items: stretch; }
+    }
+  </style>
+</head>
+<body data-page="staff">
+  <div class="admin-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="logo-mark">H</div>
+        <div>
+          <div class="logo-text">HMS</div>
+          <div class="logo-sub">Bar &amp; Lounge</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <a class="nav-link" href="dashboard.html" data-page="dashboard">
+          <span class="nav-icon">▦</span>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-link" href="products.html" data-page="products">
+          <span class="nav-icon">◈</span>
+          <span class="nav-label">Products</span>
+        </a>
+        <a class="nav-link" href="orders.html" data-page="orders">
+          <span class="nav-icon">≡</span>
+          <span class="nav-label">Orders</span>
+        </a>
+        <a class="nav-link" href="transactions.html" data-page="transactions">
+          <span class="nav-icon">₦</span>
+          <span class="nav-label">Transactions</span>
+        </a>
+
+        <div class="nav-section-label">People</div>
+        <a class="nav-link active" href="staff.html" data-page="staff">
+          <span class="nav-icon">◎</span>
+          <span class="nav-label">Staff</span>
+        </a>
+        <a class="nav-link" href="attendance.html" data-page="attendance">
+          <span class="nav-icon">✓</span>
+          <span class="nav-label">Attendance</span>
+        </a>
+
+        <div class="nav-section-label">Venue</div>
+        <a class="nav-link" href="tables.html" data-page="tables">
+          <span class="nav-icon">⊞</span>
+          <span class="nav-label">Tables / QR Codes</span>
+        </a>
+        <a class="nav-link" href="reviews.html" data-page="reviews">
+          <span class="nav-icon">★</span>
+          <span class="nav-label">Reviews</span>
+        </a>
+
+        <div class="nav-section-label">Account</div>
+        <a class="nav-link" href="profile.html" data-page="profile">
+          <span class="nav-icon">○</span>
+          <span class="nav-label">Profile</span>
+        </a>
+        <a class="nav-link" href="settings.html" data-page="settings">
+          <span class="nav-icon">⚙</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-toggle" id="sidebarToggleBtn">
+          <span class="toggle-icon">◁</span>
+          <span class="toggle-text">Collapse</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="main-area">
+      <header class="topbar">
+        <button class="topbar-mobile-toggle" id="menuToggle">☰</button>
+        <div class="topbar-title">Staff Management</div>
+        <div class="topbar-actions">
+          <span class="topbar-date" id="topbarDate"></span>
+          <div class="topbar-avatar" title="Admin">AD</div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <section class="page-hero">
+          <div>
+            <h1>Staff Management</h1>
+            <p>Manage your team by enabling or disabling staff accounts, assigning roles, and adding new team members.</p>
+          </div>
+        </section>
+
+        <div class="page-actions">
+          <div class="status-summary">
+            <div class="summary-card">
+              <span class="label">Total staff</span>
+              <span class="value" id="summaryTotal">0</span>
+            </div>
+            <div class="summary-card">
+              <span class="label">Active</span>
+              <span class="value" id="summaryActive">0</span>
+            </div>
+            <div class="summary-card">
+              <span class="label">Disabled</span>
+              <span class="value" id="summaryDisabled">0</span>
+            </div>
+          </div>
+          <button class="btn btn-primary" id="addStaffButton" type="button">Add new staff</button>
+        </div>
+
+        <div class="staff-panel card">
+          <div class="staff-panel-header">
+            <h2>Team members</h2>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="staffBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Add Staff Modal -->
+        <div class="modal-overlay" id="addStaffModal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3>Add New Staff</h3>
+            </div>
+            <div class="modal-body">
+              <div class="input-group">
+                <label for="newStaffName">Name</label>
+                <input class="input" id="newStaffName" type="text" placeholder="Enter staff name" />
+              </div>
+              <div class="input-group">
+                <label for="newStaffRole">Role</label>
+                <select class="input" id="newStaffRole">
+                  <option value="Staff">Staff</option>
+                  <option value="Manager">Manager</option>
+                  <option value="Owner">Owner</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost" id="cancelAddStaff">Cancel</button>
+              <button class="btn btn-primary" id="confirmAddStaff">Add Staff</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Confirmation Toast -->
+        <div class="confirm-toast" id="confirmToast">
+          <div class="message">Are you sure you want to disable this staff member?</div>
+          <div class="actions">
+            <button class="btn-cancel" id="confirmCancel">Cancel</button>
+            <button class="btn-confirm" id="confirmYes">Disable</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    const staffMembers = [
+      { id: 1, name: 'Amina Hassan', role: 'Manager', status: 'Active' },
+      { id: 2, name: 'Chinedu Okoro', role: 'Staff', status: 'Active' },
+      { id: 3, name: 'Fatima Bello', role: 'Staff', status: 'Disabled' },
+      { id: 4, name: 'Emeka Nwosu', role: 'Staff', status: 'Active' },
+      { id: 5, name: 'Ngozi Umeh', role: 'Manager', status: 'Disabled' }
+    ];
+
+    const staffBody = document.getElementById('staffBody');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const summaryActive = document.getElementById('summaryActive');
+    const summaryDisabled = document.getElementById('summaryDisabled');
+    const addStaffButton = document.getElementById('addStaffButton');
+    const addStaffModal = document.getElementById('addStaffModal');
+    const cancelAddStaff = document.getElementById('cancelAddStaff');
+    const confirmAddStaff = document.getElementById('confirmAddStaff');
+    const newStaffName = document.getElementById('newStaffName');
+    const newStaffRole = document.getElementById('newStaffRole');
+    const confirmToast = document.getElementById('confirmToast');
+    const confirmCancel = document.getElementById('confirmCancel');
+    const confirmYes = document.getElementById('confirmYes');
+
+    let memberToDisable = null;
+
+    function showConfirmToast(member) {
+      memberToDisable = member;
+      confirmToast.classList.add('open');
+    }
+
+    function hideConfirmToast() {
+      confirmToast.classList.remove('open');
+      memberToDisable = null;
+    }
+
+    function createStatusPill(status) {
+      const span = document.createElement('span');
+      span.className = `status-pill status-${status.toLowerCase()}`;
+      span.textContent = status;
+      return span;
+    }
+
+    function renderStaff() {
+      staffBody.innerHTML = '';
+      staffMembers.forEach(member => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-id', member.id);
+        row.innerHTML = `
+          <td>${member.name}</td>
+          <td>${member.role}</td>
+          <td></td>
+          <td></td>
+        `;
+
+        const statusCell = row.querySelector('td:nth-child(3)');
+        statusCell.appendChild(createStatusPill(member.status));
+
+        const actionsCell = row.querySelector('td:nth-child(4)');
+        actionsCell.className = 'action-group';
+
+        const roleSelect = document.createElement('select');
+        roleSelect.className = 'input';
+        ['Owner', 'Manager', 'Staff'].forEach(role => {
+          const option = document.createElement('option');
+          option.value = role;
+          option.textContent = role;
+          option.selected = member.role === role;
+          roleSelect.appendChild(option);
+        });
+        roleSelect.addEventListener('change', () => {
+          member.role = roleSelect.value;
+          renderSummary();
+          showToast(`Role updated to ${member.role} for ${member.name}`, 'success');
+        });
+
+        const toggleButton = document.createElement('button');
+        toggleButton.className = `btn btn-sm ${member.status === 'Active' ? 'btn-disable' : 'btn-enable'}`;
+        toggleButton.type = 'button';
+        toggleButton.textContent = member.status === 'Active' ? 'Disable' : 'Enable';
+        toggleButton.addEventListener('click', () => {
+          if (member.status === 'Active') {
+            showConfirmToast(member);
+          } else {
+            member.status = 'Active';
+            renderStaff();
+            renderSummary();
+            showToast(`${member.name} is now active`, 'success');
+          }
+        });
+
+        actionsCell.appendChild(roleSelect);
+        actionsCell.appendChild(toggleButton);
+        staffBody.appendChild(row);
+      });
+
+      renderSummary();
+    }
+
+    function renderSummary() {
+      const total = staffMembers.length;
+      const active = staffMembers.filter(member => member.status === 'Active').length;
+      const disabled = total - active;
+      summaryTotal.textContent = total;
+      summaryActive.textContent = active;
+      summaryDisabled.textContent = disabled;
+    }
+
+    addStaffButton.addEventListener('click', () => {
+      addStaffModal.classList.add('open');
+    });
+
+    cancelAddStaff.addEventListener('click', () => {
+      addStaffModal.classList.remove('open');
+      newStaffName.value = '';
+      newStaffRole.value = 'Staff';
+    });
+
+    confirmAddStaff.addEventListener('click', () => {
+      const name = newStaffName.value.trim();
+      const role = newStaffRole.value;
+      if (name) {
+        const newId = Math.max(...staffMembers.map(m => m.id)) + 1;
+        staffMembers.push({ id: newId, name, role, status: 'Active' });
+        renderStaff();
+        addStaffModal.classList.remove('open');
+        newStaffName.value = '';
+        newStaffRole.value = 'Staff';
+        showToast(`Added new staff: ${name}`, 'success');
+      } else {
+        showToast('Please enter a name', 'error');
+      }
+    });
+
+    confirmCancel.addEventListener('click', hideConfirmToast);
+    confirmYes.addEventListener('click', () => {
+      if (memberToDisable) {
+        memberToDisable.status = 'Disabled';
+        renderStaff();
+        renderSummary();
+        showToast(`${memberToDisable.name} is now disabled`, 'success');
+        hideConfirmToast();
+      }
+    });
+
+    renderStaff();
+  </script>
+</body>
+</html>
